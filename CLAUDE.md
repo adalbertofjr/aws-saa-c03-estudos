@@ -142,6 +142,39 @@ Validar em mermaid.live ou no preview do VS Code antes de considerar pronto.
    Se o modelo `Basic` não tiver campo Extra, concatenar Extra no fim do Verso.
 5. Registrar em `revisao/log.md`.
 
+## Procedência: os quatro marcadores
+
+Todo fato no dossiê carrega sua origem, para você saber em que confiar:
+
+| Marcador | Significa | Confiabilidade |
+|---|---|---|
+| *(sem marcador)* | veio da transcrição | o que a aula afirmou |
+| `†` ou `[fora da transcrição]` | conhecimento meu, não verificado nesta sessão | tratar com ceticismo |
+| `[doc]` | **confirmado na documentação AWS**, com a fonte listada no fim de `02-conteudo.md` | pode memorizar |
+| `⚠️ LACUNA` | **não foi possível confirmar** | buraco conhecido, não preencher de cabeça |
+
+`⚠️` nunca é usado para o que apenas dava trabalho pesquisar, nem para nuances já
+confirmadas — só para o que permanece em aberto.
+
+## Coerência entre os cinco artefatos
+
+Os cinco arquivos de um dossiê descrevem os mesmos fatos em formatos diferentes. **Ao
+revisar um deles, propagar a mudança para os outros quatro na mesma passada.**
+
+Um fato corrigido em `02-conteudo.md` e não propagado deixa `03-servicos.md` afirmando o
+contrário — e você memoriza o errado, porque o card veio do arquivo desatualizado. É o modo
+de falha mais caro deste repositório: não perde tempo, ensina errado.
+
+Checklist ao revisar qualquer artefato:
+1. O fato mudou em `02-conteudo.md`? → conferir `01-resumo.md` e `03-servicos.md`.
+2. Uma `⚠️ LACUNA` foi respondida? → **remover a marca em todos os arquivos**, não só onde
+   escrevi a resposta, e trocar por `[doc]`.
+3. O discriminador de um serviço mudou? → atualizar `estudo/_indice-servicos.md`, incluindo
+   o **mapa de decisão rápida**.
+4. Card afetado? → corrigir a linha no CSV **e reimportar** (o Anki atualiza pela Frente
+   idêntica; Frente alterada cria card novo e deixa o antigo órfão).
+5. `grep -rn "⚠️" estudo/<dominio>/<slug>/` — o que sobrar deve ser lacuna real.
+
 ## Regras invioláveis
 
 - Não inventar números (ver seção acima).
@@ -151,3 +184,5 @@ Validar em mermaid.live ou no preview do VS Code antes de considerar pronto.
 - Não reescrever transcrições brutas em `transcricoes/` — são registro imutável.
 - Sempre atualizar os dois acumuladores ao processar uma aula. Acumulador desatualizado
   quebra o passo de deduplicação da fase Plan.
+- **Nunca deixar dois artefatos do mesmo dossiê se contradizendo.** Revisou um, propaga
+  para os outros quatro — ver "Coerência entre os cinco artefatos".

@@ -1,0 +1,5 @@
+#separator:;
+#html:true
+#tags column:4
+Qual serviço fornece identidades federadas temporárias para aplicações móveis?;Amazon Cognito identity pools;Identity pools trocam um token de provedor externo por credenciais AWS temporárias via STS. User pools fazem autenticação — identity pools fazem autorização na AWS.;SAA-C03 d1 Cognito
+Security Group vs. Network ACL: qual é stateful?;O Security Group;A NACL é stateless — o tráfego de retorno precisa de regra explícita de saída. SG avalia apenas regras de permissão, NACL avalia permissão e negação em ordem numérica.;SAA-C03 d1 VPC

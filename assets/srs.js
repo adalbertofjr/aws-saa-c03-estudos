@@ -17,16 +17,20 @@ export function idDoCard(frente) {
 
 const hoje = () => Math.floor(Date.now() / 86400000);
 
+// O estado é lido a cada consulta de card. Sem cache, filtrar 77 cards por
+// "vencidos" faria 77 JSON.parse do store inteiro — e a tela refaz o filtro a
+// cada resposta. Memoriza a leitura e invalida na escrita.
+let cache = null;
+
 function ler() {
-  try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; }
-  catch { return {}; }
+  if (cache) return cache;
+  try { cache = JSON.parse(localStorage.getItem(CHAVE)) || {}; }
+  catch { cache = {}; }
+  return cache;
 }
 function gravar(estado) {
+  cache = estado;
   localStorage.setItem(CHAVE, JSON.stringify(estado));
-}
-
-export function estadoDe(id) {
-  return ler()[id] || { repeticoes: 0, facilidade: 2.5, intervalo: 0, proxima: 0 };
 }
 
 export function vencido(id) {
@@ -97,5 +101,6 @@ export function importar(arquivo) {
 }
 
 export function apagarTudo() {
+  cache = null;
   localStorage.removeItem(CHAVE);
 }

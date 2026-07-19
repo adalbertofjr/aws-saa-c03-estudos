@@ -1,4 +1,8 @@
 title: Estudos SAA-C03
+# O site é servido em /aws-saa-c03-estudos/, não na raiz do domínio.
+# Sem baseurl, todo relative_url aponta para o lugar errado.
+url: https://adalbertofjr.github.io
+baseurl: /aws-saa-c03-estudos
 description: Dossiês de estudo e flashcards para o AWS Certified Solutions Architect – Associate
 lang: pt-BR
 

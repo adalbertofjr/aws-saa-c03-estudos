@@ -6,7 +6,7 @@ aula: d1-review
 tipo: review
 fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
 processado: 2026-07-19
-cards: 77
+cards: 53
 artefato: 02-conteudo
 secao: Conteúdo de estudo
 ordem: 2

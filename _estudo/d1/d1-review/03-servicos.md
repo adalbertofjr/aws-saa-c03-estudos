@@ -6,7 +6,7 @@ aula: d1-review
 tipo: review
 fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
 processado: 2026-07-19
-cards: 77
+cards: 53
 artefato: 03-servicos
 secao: Serviços AWS
 ordem: 3
@@ -14,6 +14,14 @@ ordem: 3
 
 Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcrição] ·
 `[doc]` = confirmado na documentação AWS (fontes em `02-conteudo.md`) · `⚠️` = lacuna aberta.
+
+> ⚠️ **A coluna "Tags Anki" abaixo é ilustrativa e antecede a reescrita do deck** (ver
+> "Como construir um flashcard" no `CLAUDE.md`). O deck foi reescrito no formato
+> requisito+condição→solução com armadilha nomeada, e as tags de card ganharam a
+> declaração de tarefa (`t1.1`/`t1.2`/`t1.3`). `05-flashcards.csv` é a fonte de verdade das
+> tags reais — não remapeei aqui as 44 referências desta tabela para evitar introduzir
+> remapeamentos incorretos sob pressão de tempo. Tratar como mapa de tópico, não como
+> índice de tag literal.
 
 ## Identidade e acesso
 

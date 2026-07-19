@@ -101,6 +101,69 @@ Todo fato no dossiê carrega sua origem, para você saber em que confiar:
 `⚠️` nunca é usado para o que apenas dava trabalho pesquisar, nem para nuances já
 confirmadas — só para o que permanece em aberto.
 
+## Como construir um flashcard
+
+O exame não recompensa recall — recompensa **eliminação de alternativas**. O guia oficial
+define pegadinha (*distractor*) como "resposta plausível que corresponde à área de
+conteúdo": a opção errada é escolhida por quem sabe menos, não por quem não sabe nada. Um
+card treina para o exame só quando treina esse mesmo músculo.
+
+### O teste de admissão
+
+Antes de escrever qualquer card, uma pergunta:
+
+> **Este card ajuda a eliminar uma alternativa numa questão de prova?**
+
+Se a resposta é não, o card não deveria existir — o fato pertence a `02-conteudo.md`, não a
+`05-flashcards.csv`.
+
+### Formato do card de cenário (`cen`)
+
+Espelha a anatomia oficial da questão — requisito + condição → melhor solução —, com a
+pegadinha nomeada no Extra:
+
+```
+Frente: <Requisito>. <Condição/restrição>. Qual a solução?
+Verso:  <Serviço ou ação>
+Extra:  <Por que atende.> ⚠ Armadilha: <serviço plausível> — <por que perde>
+```
+
+O campo **Armadilha é obrigatório em `cen` e `disc`**. Sem ela, o card testa "qual serviço
+faz X" — o exame testa "qual dos dois serviços plausíveis faz X melhor, dada a restrição".
+
+### Critério por tipo e mix-alvo
+
+| Tipo | Admite | Meta no deck |
+|---|---|---|
+| `cen` | requisito + restrição → serviço, com armadilha nomeada | **≥ 35%** |
+| `disc` | X vs. Y com o fator decisivo, com armadilha nomeada | **≥ 35%** |
+| `num` | **só** limite que elimina alternativa (ex.: WAF só em ALB/API GW/CloudFront) | ≤ 20% |
+| `def` | **só** quando a própria definição já é o discriminador | ≤ 10% |
+
+Se um deck sair com `def`+`num` somando mais da metade, ele está ensinando trivia, não
+prova. Confira a proporção antes de fechar a aula.
+
+### Quatro proibições
+
+1. **Preço em qualquer forma.** Valores mudam, e a calculadora de preços da AWS responde
+   isso — o exame não pergunta quanto custa. O que importa é a **relação**: "Shield Advanced
+   é pago com compromisso anual; Standard é automático e gratuito" é `disc` válido, sem
+   nenhum número de dólar.
+2. **Meta-card sobre a aula.** O card é sobre a AWS, nunca sobre o vídeo. Proibido "segundo
+   o instrutor", "este módulo nomeia", "a aula avisa que". Se o fato só existe porque o
+   instrutor disse, ele não é testável — vira nota ou lacuna, não card.
+3. **Enumeração decorativa.** Uma lista vira card apenas se a prova puder pedir para
+   **escolher um item dela** ("qual das 3 opções de SSE do S3 atende a X" → sim; "quais as
+   5 capacidades do CAF" → não, é recitação).
+4. **Definição sem rival.** "O que é uma política na AWS?" não elimina nada. Se não há um
+   segundo serviço ou conceito contra o qual comparar, reescreva como `cen` ou descarte.
+
+### Nomenclatura
+
+Usar os nomes do **guia oficial do exame**, não os do vídeo, quando divergirem — ex.: o
+guia diz **IAM Identity Center**, aulas mais antigas dizem "AWS Single Sign-On". Registrar o
+nome antigo entre parênteses na primeira menção de `02-conteudo.md`.
+
 ## Contrato do CSV para Anki
 
 Deck único `SAA-C03` — a separação é por tag, não por subdeck.
@@ -118,20 +181,23 @@ Colunas: `Frente;Verso;Extra;Tags`
 
 - **Frente** — uma pergunta só. Nunca "e/ou", nunca duas coisas.
 - **Verso** — resposta mínima suficiente. Sem preâmbulo ("A resposta é...").
-- **Extra** — o *porquê*, a distinção do serviço rival, ou o cenário. Pode ser vazio.
+- **Extra** — o *porquê*, e em `cen`/`disc` a armadilha nomeada (ver seção acima).
 - **Tags** — separadas por espaço, nesta ordem:
-  `SAA-C03 <dominio> <servico> <tipo>` — ex.: `SAA-C03 d1 IAM disc`
+  `SAA-C03 <dominio> <tarefa> <servico> <tipo>` — ex.: `SAA-C03 d1 t1.2 PrivateLink cen`
 
-`<tipo>` ∈ `def` (definição) · `disc` (discriminação X vs Y) · `num` (limite/valor) ·
-`cen` (cenário no estilo do exame). Permite estudo filtrado: `tag:disc`, `deck:SAA-C03 tag:d3`.
+`<tarefa>` é a declaração de tarefa oficial do domínio (`t1.1`, `t1.2`, `t1.3`, `t2.1`...) —
+ver `_estudo/00-guia-do-exame.md`. Torna a cobertura auditável: dá para perguntar quais
+habilidades do guia ainda não têm card, em vez de confiar em impressão de completude.
 
-**Priorizar `disc` e `cen`** — o SAA-C03 testa escolha entre serviços, não definição.
+`<tipo>` ∈ `def` · `disc` · `num` · `cen` — critério de admissão de cada um na seção acima.
+Permite estudo filtrado: `tag:disc`, `deck:SAA-C03 tag:d3`, `tag:t1.2`.
 
 Escapar: nenhum campo pode conter `;` — usar `,` ou reescrever. Quebra de linha dentro de
 campo apenas como `<br>` (por isso `#html:true`).
 
 Cobertura alvo: 15–30 cards por aula de 45min. Menos indica extração rasa; muito mais
-indica que fatos não-testáveis viraram card.
+indica que fatos não-testáveis viraram card. Rodar `00-processo/validar-cards.sh` no CSV
+antes de considerar a aula fechada.
 
 ## Sintaxe Mermaid (mapas mentais)
 
@@ -150,9 +216,11 @@ Validar em mermaid.live ou no preview do VS Code antes de considerar pronto.
    `# <título da aula>` e `Fonte: Skill Builder — <curso> — <módulo>`.
 2. Pedir: `processar transcricoes/d1/<slug>.md`.
 3. Revisar. Corrigir erros **no arquivo**, não no chat — o arquivo é a fonte da verdade.
-4. Importar o CSV no Anki: *File → Import*, tipo de nota `Basic`, deck `SAA-C03`.
+4. Rodar `bash 00-processo/validar-cards.sh _estudo/<dominio>/<slug>/05-flashcards.csv` —
+   corrige até passar sem violações.
+5. Importar o CSV no Anki: *File → Import*, tipo de nota `Basic`, deck `SAA-C03`.
    Se o modelo `Basic` não tiver campo Extra, concatenar Extra no fim do Verso.
-5. Registrar em `revisao/log.md`.
+6. Registrar em `revisao/log.md`.
 
 ## Coerência entre os cinco artefatos
 

@@ -5,7 +5,7 @@ atualizados. `Serviços novos` = quantos entraram em `_estudo/00-indice-servicos
 
 | Data | Domínio | Aula | Cards | Serviços novos | Anki | Publicado | Lacunas |
 |---|---|---|---|---|---|---|---|
-| 2026-07-19 | d1 | [Domain 1 Review](../_estudo/d1/d1-review/01-resumo.md) | 77 | 50 | ☐ | ☑ | RTO e impacto de cripto em desempenho |
+| 2026-07-19 | d1 | [Domain 1 Review](../_estudo/d1/d1-review/01-resumo.md) | 53 | 50 | ☐ | ☑ | RTO e impacto de cripto em desempenho; deck reescrito 19/07 (ver "Como construir um flashcard") |
 
 ## Trilha planejada (18 treinamentos)
 
@@ -17,7 +17,7 @@ atualizados. `Serviços novos` = quantos entraram em `_estudo/00-indice-servicos
 - [ ] Exam Prep Summary
 
 ### Domínio 1 — Criação de arquiteturas seguras (`d1`)
-- [x] Domain 1 Review — concluído 18/07/2026 · processado (77 cards)
+- [x] Domain 1 Review — concluído 18/07/2026 · processado, deck reescrito no formato requisito+condição 19/07/2026 (53 cards)
   - [ ] Como usar este curso *(administrativo — não gera cards)*
   - [ ] Introdução ao Domínio 1
   - [ ] Criar acesso seguro aos recursos da AWS

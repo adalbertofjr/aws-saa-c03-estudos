@@ -6,6 +6,8 @@ tipo: indice
 
 Todos os serviços vistos em qualquer aula. **Folha de consulta única para a semana do exame.**
 
+Ver também o [guia do exame](00-guia-do-exame.md) — lista completa de serviços em escopo por categoria, e as 13 declarações de tarefa que as tags `t1.1`...`t4.4` dos cards referenciam.
+
 Atualizado a cada aula processada. Antes de gerar flashcards, a fase *Plan* consulta esta
 tabela: serviço já listado não gera card de definição de novo — gera card de discriminação.
 
@@ -16,7 +18,7 @@ tabela: serviço já listado não gera card de definição de novo — gera card
 | **IAM** | Segurança e identidade | Quem pode fazer o quê nos recursos AWS | **Global**; identidades nascem sem permissões | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS STS** | Segurança e identidade | Emite credenciais temporárias | AssumeRole até **12 h**; GetSessionToken até **36 h** | [d1-review](d1/d1-review/01-resumo.md) |
 | **Amazon Cognito** | Segurança e identidade | Identidade para aplicações; SSO e federação | Usuário **final de app**; user pool autentica, identity pool dá credencial AWS | [d1-review](d1/d1-review/01-resumo.md) |
-| **AWS Single Sign-On** | Segurança e identidade | Acesso centralizado a várias contas e apps | **Funcionário**, não usuário final de app † | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS IAM Identity Center** (antigo AWS SSO) | Segurança e identidade | Acesso centralizado a várias contas e apps | **Funcionário**, não usuário final de app † | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS Organizations** | Gerenciamento e governança | Gestão de múltiplas contas | Container das contas; habilita SCP | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS Control Tower** | Gerenciamento e governança | Landing zone multi-conta governada | **Provisiona** o ambiente com guardrails prontos | [d1-review](d1/d1-review/01-resumo.md) |
 | **SCP** | Gerenciamento e governança | Teto de permissões das contas da organização | **Limita, nunca concede**; resultado é interseção | [d1-review](d1/d1-review/01-resumo.md) |
@@ -98,3 +100,16 @@ tabela: serviço já listado não gera card de definição de novo — gera card
 | "painel único de achados" | Security Hub | GuardDuty (detecta, não agrega) |
 | "copiar objetos para outra Região continuamente" | S3 CRR | snapshot |
 | "seguindo as práticas recomendadas" + operação diária | qualquer coisa menos o usuário raiz | — |
+
+## Serviços em escopo do Domínio 1 ainda não cobertos
+
+Aparecem na categoria "Segurança, Identidade e Conformidade" do [guia do
+exame](00-guia-do-exame.md), mas nenhuma aula processada até agora gerou card para eles.
+Ficam como lembrete para o Domain 1 Practice e o SimuLearn:
+
+- [ ] **AWS Network Firewall** — firewall gerenciado de rede na VPC (camada 3-7)
+- [ ] **AWS Firewall Manager** — gestão centralizada de WAF/Shield/Network Firewall entre contas
+- [ ] **AWS Resource Access Manager (RAM)** — compartilha recursos entre contas sem duplicar
+- [ ] **AWS Audit Manager** — automatiza coleta de evidência para auditorias de conformidade
+- [ ] **Amazon Detective** — investiga a causa raiz de um achado do GuardDuty
+- [ ] **Amazon Inspector** — varre EC2/ECR/Lambda por vulnerabilidades conhecidas

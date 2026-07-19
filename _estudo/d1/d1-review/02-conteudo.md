@@ -6,7 +6,7 @@ aula: d1-review
 tipo: review
 fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
 processado: 2026-07-19
-cards: 63
+cards: 77
 artefato: 02-conteudo
 secao: Conteúdo de estudo
 ordem: 2
@@ -55,6 +55,23 @@ seguras · **1.3** controles de segurança de dados.
 
 Nível exigido: **ler e interpretar** políticas, não escrever avançadas.
 
+O encerramento cobra a distinção entre **quatro** tipos. `[doc]` A AWS documenta nove ao
+todo, mas estes são os que o exame usa:
+
+| Tipo | Anexada a | Papel |
+|---|---|---|
+| **Identidade** | usuário, grupo, role | **concede** o que a identidade pode fazer |
+| **Recurso** | o recurso (bucket, fila, chave) | **concede** e define **quem** acessa — tem `Principal` |
+| **Permissions boundary** | usuário ou role | **teto** do que a política de identidade pode conceder — não concede nada |
+| **SCP** | conta ou OU na organização | **teto** da conta inteira — não concede nada |
+
+**A divisão que importa:** identidade e recurso **concedem**; boundary e SCP apenas
+**limitam**. Alternativa que diz "use uma SCP para dar acesso ao time X" está errada por
+construção.
+
+`[doc]` Na mesma conta, identidade e recurso se **somam** (união): basta uma das duas
+permitir. Já boundary e SCP se **intersectam**: precisam permitir junto com a de identidade.
+
 **[doc] Lógica de avaliação, na ordem:**
 1. **Negação implícita** — tudo é negado por padrão.
 2. **Negação explícita em qualquer política vence tudo.** Nenhum `Allow` a reverte.
@@ -72,14 +89,72 @@ Nível exigido: **ler e interpretar** políticas, não escrever avançadas.
 - **Gancho:** "usuários já existem no diretório corporativo" → role + federação + STS.
   Criar usuários IAM permanentes é a alternativa errada.
 
+**Role vs. usuário do IAM** — pergunta direta do encerramento. `[doc]`
+
+| | **Role** | **Usuário** |
+|---|---|---|
+| Credencial | **temporária**, expira sozinha | **longo prazo** (senha, access key) |
+| Vinculada a | ninguém — é **assumível** por quem precisar | uma pessoa específica |
+| Revogação | automática ao expirar | manual |
+
+A recomendação da AWS é categórica: **pessoas devem assumir role via federação**; usuário IAM
+fica reservado a **cargas que não conseguem usar role**. No exame, se a alternativa cria
+usuário IAM para gente ou para serviço da AWS, está errada.
+
+**AWS Directory Service** — a aula pede os casos de uso. `[doc]`
+
+| Opção | Quando |
+|---|---|
+| **AWS Managed Microsoft AD** | AD de verdade na AWS: cargas Windows, RDS for SQL Server, FSx, relação de confiança com o AD on-premises, **mais de 5.000 usuários** |
+| **AD Connector** | **proxy** para o AD on-premises existente — **não guarda nada na nuvem**; você segue administrando o AD onde ele está |
+| **Simple AD** | compatibilidade básica, **até 5.000 usuários**, baixo custo |
+
+⚠️ **Simple AD deixa de aceitar novos clientes em 30/07/2026** `[doc]` — dias após esta
+data de estudo. Continua no escopo do exame, mas não é escolha para projeto novo.
+
+**Discriminador:** "manter a administração do AD on-premises, sem replicar nada para a
+nuvem" → **AD Connector**. "Preciso de trust com o domínio on-premises" → **Managed
+Microsoft AD**.
+
 ### Governança multi-conta
-**Organizations** (container das contas) · **Control Tower** (landing zone com guardrails) ·
-**SCP** (teto de permissões).
+O encerramento pergunta qual serviço aplica menor privilégio em ambiente multi-conta,
+oferecendo três candidatos. Os três atuam, em camadas diferentes:
+
+| Serviço | O que faz pelo menor privilégio | Concede permissão? |
+|---|---|---|
+| **Organizations** + **SCP** | define o **teto** de permissões das contas | **Não** — só limita |
+| **Control Tower** | provisiona a landing zone com **guardrails** já aplicados `[doc]` | Não — automatiza a governança |
+| **Service Catalog** | publica **produtos aprovados**; o **launch role** provisiona os recursos, de modo que o usuário final **não precisa de permissão sobre eles** `[doc]` | Indiretamente, via launch role |
+
+**A resposta canônica para "limitar permissões em multi-conta" é Organizations com SCP** —
+é o único que impõe um teto que a conta-membro não contorna. Service Catalog resolve outro
+problema: deixar o time provisionar infraestrutura **sem** conceder as permissões
+subjacentes. Se o enunciado falar em *provisionar recursos padronizados sem dar acesso
+amplo*, é Service Catalog.
+
+### Rastreabilidade e monitoramento
 **Rastreabilidade** = monitorar, alertar e auditar ações e alterações **em tempo real**, com
 coleta de registros e métricas integrada a sistemas que investigam e agem automaticamente.
-**Gancho:** "impor padrão que o admin da conta-membro não contorne" → SCP.
 
-⚠️ A transcrição **não nomeia** CloudTrail, Config nem CloudWatch, embora cobre o conceito.
+Os três nomeados na aula, e o que cada um responde:
+
+| Serviço | Responde |
+|---|---|
+| **AWS CloudTrail** | *quem chamou qual API, quando* — auditoria de chamadas |
+| **Amazon CloudWatch** | *como está se comportando* — métricas, logs e alarmes |
+| **VPC Flow Logs** | *que tráfego entrou e saiu* — nas ENIs da VPC |
+
+O instrutor pede explicitamente que você conheça **outros além desses três**. `[doc]` Os que
+mais aparecem no exame: **AWS Config** (conformidade da *configuração* dos recursos e seu
+histórico), **GuardDuty** (detecção de ameaças), **Security Hub** (agregação de achados),
+**IAM Access Analyzer** (acesso externo indevido), **Inspector** (vulnerabilidades),
+**Detective** (investigação) e **Macie** (dados sigilosos).
+
+**Discriminador que cai:** CloudTrail registra a **chamada**; Config registra o **estado** do
+recurso e como ele mudou. "Quem alterou o security group?" → CloudTrail. "Este bucket já
+esteve público em algum momento?" → Config.
+
+**Gancho:** "impor padrão que o admin da conta-membro não contorne" → SCP.
 
 ---
 
@@ -295,6 +370,35 @@ DynamoDB, EFS, Storage Gateway, FSx (Windows e Lustre), **com cópia entre Regi�
 
 ---
 
+## Encerramento: o checklist do instrutor
+
+O módulo de fechamento não traz conteúdo novo — traz a **lista do que você precisa saber
+antes de ir para o Domínio 2**. Trate como autoavaliação: se não responde de cabeça, volte
+à seção correspondente.
+
+1. Que serviços aplicam menor privilégio em ambiente **multi-conta**? → Organizations/SCP,
+   Control Tower, Service Catalog — cada um em sua camada.
+2. Quando usar **role** e quando usar **usuário** do IAM?
+3. Diferença entre política de **identidade**, de **recurso**, **permissions boundary** e
+   **SCP** — quais concedem e quais só limitam.
+4. Como as políticas são avaliadas quando há **allow e deny sobrepostos**?
+5. Quais as formas de **federar** na AWS; casos de uso do **AWS SSO** e do
+   **AWS Directory Service**.
+6. Que serviços de **monitoramento** existem **além de** CloudTrail, CloudWatch e VPC Flow Logs?
+7. Como montar uma **VPC com os controles de segurança** adequados.
+8. Casos de uso e capacidades de **Shield, WAF, Secrets Manager e Parameter Store**.
+9. Como proteger dados **em trânsito e em repouso**; quando **KMS** e quando **CloudHSM**.
+
+A frase que resume a estratégia de prova, dita pelo próprio instrutor:
+
+> **Conseguir escolher entre dois serviços diferentes a partir do enunciado é o que vai te
+> fazer passar na certificação.**
+
+É a justificativa de por que os cards priorizam `disc` e `cen` sobre `def`: o exame quase
+nunca pergunta o que um serviço faz — pergunta qual dos plausíveis atende à restrição.
+
+---
+
 ## Como isto se conecta ao que já estudei
 
 Primeira aula processada. Ganchos para as próximas:
@@ -305,11 +409,12 @@ Primeira aula processada. Ganchos para as próximas:
 - **Criptografia e desempenho** → **D3**.
 
 ## Lacunas remanescentes
-- ⚠️ **Módulo 5 ("Encerramento") tem transcrição trocada** — texto em inglês sobre processo
-  criativo. Nada extraído.
-- ⚠️ Rastreabilidade cobrada sem nomear CloudTrail, Config, CloudWatch.
-- ⚠️ Organizations vs. Control Tower citados sem diferenciação — estudar separadamente.
 - ⚠️ Impacto quantitativo da criptografia em desempenho: sem valores publicados utilizáveis.
+- ⚠️ RTO por estratégia de DR — a aula só trata RPO.
+
+*(Resolvidas em 19/07/2026 com a transcrição correta do módulo 5: os serviços de
+monitoramento passaram a ser nomeados, e Organizations, Control Tower e Service Catalog
+ganharam diferenciação.)*
 
 ## Fontes das respostas `[doc]`
 
@@ -319,4 +424,8 @@ Primeira aula processada. Ganchos para as próximas:
 - [Recursos do AWS Shield](https://aws.amazon.com/shield/features/) · [FAQ do Shield](https://aws.amazon.com/shield/faqs/) · [Preço do Shield](https://aws.amazon.com/shield/pricing/)
 - [Rotação de chaves do KMS](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html) · [Escolha de serviço de criptografia](https://docs.aws.amazon.com/decision-guides/latest/cryptography-on-aws-how-to-choose/guide.html) · [O que é o CloudHSM](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html) · [KMS e FIPS 140-3 Nível 3](https://aws.amazon.com/blogs/security/aws-kms-now-fips-140-2-level-3-what-does-this-mean-for-you/)
 - [Renovação gerenciada no ACM](https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html) · [Renovação com validação por DNS](https://docs.aws.amazon.com/acm/latest/userguide/dns-renewal-validation.html)
+- [Tipos de política do IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html) · [Identidade vs. recurso](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html) · [Permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
+- [Role vs. usuário e credenciais temporárias](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html) · [Boas práticas do IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [Opções do Directory Service](https://docs.aws.amazon.com/whitepapers/latest/active-directory-domain-services/directory-services-options-in-aws.html) · [Fim de novas assinaturas do Simple AD](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/simple-ad-availability-change.html)
+- [Visão geral do Service Catalog](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/introduction.html)
 - [Direct Connect](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-direct-connect.html) · [Direct Connect + VPN](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-direct-connect-site-to-site-vpn.html) · [FAQ do AWS VPN](https://aws.amazon.com/vpn/faqs/)

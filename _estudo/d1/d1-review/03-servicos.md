@@ -6,7 +6,7 @@ aula: d1-review
 tipo: review
 fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
 processado: 2026-07-19
-cards: 63
+cards: 77
 artefato: 03-servicos
 secao: Serviços AWS
 ordem: 3
@@ -23,9 +23,22 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 | **AWS STS** | Emite credenciais temporárias | Assumir roles dentro e entre contas | Acesso temporário, cross-account, federação | Acesso permanente de carga interna → role atribuída ao serviço | **AssumeRole 12 h**; GetSessionToken 36 h `[doc]` | `d1 STS num` |
 | **Amazon Cognito** | Identidade para aplicações; SSO e federação de IDs | Citado como fonte provável de questão de cenário | Autenticar usuários de app web/mobile e dar credenciais AWS | Federação de funcionários corporativos → IAM Identity Center / AD † | user pools vs. identity pools | `d1 Cognito disc` |
 | **AWS Single Sign-On** | Acesso centralizado a múltiplas contas/apps | Citado na lista de integração de segurança | Funcionários acessando várias contas AWS | Usuários finais de aplicação → Cognito † | Hoje chamado IAM Identity Center † | `d1 SSO def` |
-| **AWS Organizations** | Gestão de múltiplas contas | Estratégia de segurança multi-conta | Consolidar contas e aplicar SCPs | Conta única | ⚠️ não diferenciado na aula | `d1 Organizations def` |
-| **AWS Control Tower** | Landing zone multi-conta governada | Impor padrões de segurança | Provisionar ambiente multi-conta com guardrails | Já existe Organizations maduro † | ⚠️ não diferenciado na aula | `d1 ControlTower def` |
+| **AWS Directory Service** | Active Directory gerenciado ou proxy para o seu | Casos de uso cobrados no encerramento | **Managed Microsoft AD**: trust com on-premises, +5.000 usuários, cargas Windows `[doc]` | Só federar console → SSO † | **AD Connector** é proxy e não guarda nada na nuvem; **Simple AD** até 5.000 usuários, sem novos clientes a partir de 30/07/2026 `[doc]` | `d1 DirectoryService disc` |
+| **AWS Organizations** | Gestão de múltiplas contas | Estratégia de segurança multi-conta | Aplicar o **teto** de permissões via SCP | Conta única | Container das contas; habilita SCP | `d1 Organizations disc` |
+| **AWS Control Tower** | Landing zone multi-conta governada | Impor padrões de segurança | **Provisionar** o ambiente multi-conta com guardrails prontos `[doc]` | Já existe Organizations maduro † | Automatiza a governança, não concede | `d1 ControlTower disc` |
+| **AWS Service Catalog** | Catálogo de produtos aprovados (CloudFormation) | Terceiro candidato do encerramento para menor privilégio | Time provisiona recursos padronizados **sem ter permissão sobre eles** — o **launch role** provisiona `[doc]` | Impor teto de permissões → SCP | Portfólios + launch constraints | `d1 ServiceCatalog cen` |
 | **SCP** | Política que limita o **máximo** de permissões de contas na organização | Impor padrões que a conta-membro não contorna | Teto de permissão organizacional | Conceder permissão — SCP **não concede**, só limita † | Aplica-se a Organizations | `d1 SCP disc` |
+
+## Monitoramento e rastreabilidade
+
+| Serviço | O que é | Papel nesta aula | Quando usar | Quando NÃO usar (alternativa) | Limites / números | Tags Anki |
+|---|---|---|---|---|---|---|
+| **AWS CloudTrail** | Auditoria de chamadas de API | Nomeado no encerramento | "**Quem** chamou qual API e quando" | Saber o **estado** do recurso → Config | Registra a chamada, não o estado | `d1 CloudTrail disc` |
+| **Amazon CloudWatch** | Métricas, logs e alarmes | Nomeado no encerramento | Comportamento e desempenho; alarmes | Auditar autoria de mudança → CloudTrail | — | `d1 CloudWatch disc` |
+| **VPC Flow Logs** | Registro do tráfego nas ENIs | Nomeado no encerramento | "Que tráfego entrou/saiu da VPC" | Chamada de API → CloudTrail | Nível de ENI, subnet ou VPC † | `d1 VPCFlowLogs disc` |
+| **AWS Config** | Conformidade e histórico de **configuração** | Um dos "outros além dos três" `[doc]` | "Este bucket já esteve público?"; conformidade contínua | Autoria da chamada → CloudTrail | Estado e histórico do recurso | `d1 Config disc` |
+| **AWS Security Hub** | Agrega achados de segurança | Um dos "outros" `[doc]` | Painel único de achados de vários serviços | Detectar por si → GuardDuty | — | `d1 SecurityHub def` |
+| **IAM Access Analyzer** | Detecta acesso externo indevido | Um dos "outros" `[doc]` | "Algum recurso está exposto para fora da conta?" | — | — | `d1 AccessAnalyzer cen` |
 
 ## Rede e isolamento
 
@@ -144,6 +157,29 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 KMS já é **FIPS 140-3 Nível 3**. O discriminador honesto hoje é **single-tenancy sob controle
 do cliente** e as interfaces **PKCS#11/JCE**. O SAA-C03 pode ainda testar o enquadramento antigo.
 Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
+
+### AWS CloudTrail vs. AWS Config
+| | CloudTrail | Config |
+|---|---|---|
+| Registra | a **chamada de API** | o **estado** do recurso e como mudou |
+| Responde | "**quem** alterou o security group?" | "este bucket **já esteve** público?" |
+
+**Diferenciador:** autoria da ação → CloudTrail. Histórico de configuração → Config.
+
+### Organizations/SCP vs. Service Catalog
+| | SCP | Service Catalog |
+|---|---|---|
+| Mecanismo | **teto** de permissões da conta | **produtos aprovados** + launch role |
+| Efeito | ninguém ultrapassa o limite | o time provisiona **sem ter permissão** nos recursos |
+
+**Diferenciador:** "impedir que façam X" → SCP. "Deixar provisionar o padrão sem dar acesso
+amplo" → Service Catalog.
+
+### AD Connector vs. Managed Microsoft AD
+| | AD Connector | Managed Microsoft AD |
+|---|---|---|
+| Onde ficam os dados | **só on-premises** — é proxy, não guarda nada na nuvem | AD real na AWS |
+| Escolha quando | manter a administração no AD existente | trust com on-premises, +5.000 usuários, cargas Windows |
 
 ### Níveis de resiliência (armadilha clássica)
 | Recurso | Nível |

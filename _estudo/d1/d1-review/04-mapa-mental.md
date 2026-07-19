@@ -6,7 +6,7 @@ aula: d1-review
 tipo: review
 fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
 processado: 2026-07-19
-cards: 63
+cards: 77
 artefato: 04-mapa-mental
 secao: Mapa mental
 ordem: 4
@@ -38,11 +38,31 @@ mindmap
         STS - temporárias
         Federação por role
         Active Directory / IdP
+      Políticas - 4 tipos
+        Identidade CONCEDE
+        Recurso CONCEDE
+        Permissions boundary LIMITA
+        SCP LIMITA
+      Role vs Usuário
+        Role - temporária<br>pessoas e serviços
+        Usuário - longo prazo<br>só se não der role
       Multi-conta
-        Organizations
-        Control Tower
-        SCP
-        Rastreabilidade<br>monitorar alertar auditar
+        Organizations - teto via SCP
+        Control Tower - guardrails
+        Service Catalog<br>provisiona sem permissão
+      Federação
+        AWS SSO
+        Directory Service
+          Managed Microsoft AD<br>trust e +5000
+          AD Connector<br>proxy nada na nuvem
+          Simple AD - até 5000
+      Monitoramento
+        CloudTrail - QUEM chamou
+        CloudWatch - comportamento
+        VPC Flow Logs - tráfego
+        Config - ESTADO do recurso
+        Security Hub
+        Access Analyzer
     1.2 Cargas e apps seguras
       VPC - REGIONAL
         Padrão e personalizada

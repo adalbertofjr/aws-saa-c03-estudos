@@ -18,8 +18,16 @@ tabela: serviço já listado não gera card de definição de novo — gera card
 | **Amazon Cognito** | Segurança e identidade | Identidade para aplicações; SSO e federação | Usuário **final de app**; user pool autentica, identity pool dá credencial AWS | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS Single Sign-On** | Segurança e identidade | Acesso centralizado a várias contas e apps | **Funcionário**, não usuário final de app † | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS Organizations** | Gerenciamento e governança | Gestão de múltiplas contas | Container das contas; habilita SCP | [d1-review](d1/d1-review/01-resumo.md) |
-| **AWS Control Tower** | Gerenciamento e governança | Landing zone multi-conta governada | Provisiona ambiente com guardrails ⚠️ | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS Control Tower** | Gerenciamento e governança | Landing zone multi-conta governada | **Provisiona** o ambiente com guardrails prontos | [d1-review](d1/d1-review/01-resumo.md) |
 | **SCP** | Gerenciamento e governança | Teto de permissões das contas da organização | **Limita, nunca concede**; resultado é interseção | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS Service Catalog** | Gerenciamento e governança | Catálogo de produtos aprovados | Provisionar **sem** dar permissão nos recursos (launch role) | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS Directory Service** | Segurança e identidade | AD gerenciado ou proxy para o seu | AD Connector **não guarda nada na nuvem**; Managed AD para trust e +5.000 | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS CloudTrail** | Gerenciamento e governança | Auditoria de chamadas de API | **Quem** chamou — não o estado do recurso | [d1-review](d1/d1-review/01-resumo.md) |
+| **Amazon CloudWatch** | Gerenciamento e governança | Métricas, logs e alarmes | Comportamento, não autoria | [d1-review](d1/d1-review/01-resumo.md) |
+| **VPC Flow Logs** | Rede | Registro do tráfego nas ENIs | Tráfego de rede, não chamada de API | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS Config** | Gerenciamento e governança | Conformidade e histórico de configuração | **Estado** do recurso ao longo do tempo | [d1-review](d1/d1-review/01-resumo.md) |
+| **AWS Security Hub** | Segurança | Agrega achados de segurança | Agrega — quem detecta é o GuardDuty | [d1-review](d1/d1-review/01-resumo.md) |
+| **IAM Access Analyzer** | Segurança | Detecta acesso externo indevido | "Está exposto para fora da conta?" | [d1-review](d1/d1-review/01-resumo.md) |
 | **AWS Artifact** | Gerenciamento e governança | Portal de documentos de conformidade | "O auditor pediu o relatório" — não é operacional | [d1-review](d1/d1-review/01-resumo.md) |
 | **Amazon VPC** | Rede | Rede virtual isolada | **Regional**; tipos padrão e personalizada | [d1-review](d1/d1-review/01-resumo.md) |
 | **Subnet** | Rede | Onde os recursos rodam dentro da VPC | **Zonal**; pública = tem rota para IGW † | [d1-review](d1/d1-review/01-resumo.md) |
@@ -81,5 +89,12 @@ tabela: serviço já listado não gera card de definição de novo — gera card
 | "padrão de acesso previsível / por idade" | S3 Lifecycle | Intelligent-Tiering |
 | "usuários já existem no diretório corporativo" | role + federação + STS | criar usuários IAM |
 | "impor padrão que a conta-membro não contorne" | SCP | política de identidade |
+| "provisionar o padrão sem dar acesso amplo" | Service Catalog | SCP |
+| "quem alterou este recurso?" | CloudTrail | Config |
+| "este recurso já esteve exposto?" | Config | CloudTrail |
+| "manter a administração no AD on-premises" | AD Connector | Managed Microsoft AD |
+| "trust com o domínio on-premises" ou +5.000 usuários | Managed Microsoft AD | AD Connector |
+| "recurso acessível de fora da conta" | IAM Access Analyzer | GuardDuty |
+| "painel único de achados" | Security Hub | GuardDuty (detecta, não agrega) |
 | "copiar objetos para outra Região continuamente" | S3 CRR | snapshot |
 | "seguindo as práticas recomendadas" + operação diária | qualquer coisa menos o usuário raiz | — |

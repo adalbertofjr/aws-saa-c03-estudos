@@ -5,7 +5,7 @@ atualizados. `Serviços novos` = quantos entraram em `_estudo/00-indice-servicos
 
 | Data | Domínio | Aula | Cards | Serviços novos | Anki | Publicado | Lacunas |
 |---|---|---|---|---|---|---|---|
-| 2026-07-19 | d1 | [Domain 1 Review](../_estudo/d1/d1-review/01-resumo.md) | 63 | 42 | ☐ | ☑ | Módulo 5 com transcrição trocada; RTO e impacto de cripto em desempenho |
+| 2026-07-19 | d1 | [Domain 1 Review](../_estudo/d1/d1-review/01-resumo.md) | 77 | 50 | ☐ | ☑ | RTO e impacto de cripto em desempenho |
 
 ## Trilha planejada (18 treinamentos)
 
@@ -17,13 +17,13 @@ atualizados. `Serviços novos` = quantos entraram em `_estudo/00-indice-servicos
 - [ ] Exam Prep Summary
 
 ### Domínio 1 — Criação de arquiteturas seguras (`d1`)
-- [x] Domain 1 Review — concluído 18/07/2026 · transcrição pendente
+- [x] Domain 1 Review — concluído 18/07/2026 · processado (77 cards)
   - [ ] Como usar este curso *(administrativo — não gera cards)*
   - [ ] Introdução ao Domínio 1
   - [ ] Criar acesso seguro aos recursos da AWS
   - [ ] Projetar cargas de trabalho e aplicativos seguros
   - [ ] Determinar controles de segurança de dados apropriados
-  - [ ] Encerramento do domínio 1
+  - [x] Encerramento do domínio 1
   - [ ] Recursos adicionais
 - [ ] Domain 1 Practice
 - [ ] Domain 1 SimuLearn

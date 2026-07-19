@@ -28,11 +28,24 @@ mindmap
         Nunca hardcode
         STS temporárias
         Federação por role e IdP
+      Políticas - quatro tipos
+        Identidade e recurso CONCEDEM
+        Boundary e SCP LIMITAM
+      Role vs Usuário
+        Role temporária - padrão
+        Usuário só se não der role
       Governança multi-conta
-        Organizations
-        Control Tower
-        SCP limita não concede
-        Rastreabilidade
+        Organizations - teto via SCP
+        Control Tower - guardrails
+        Service Catalog - launch role
+      Federação
+        AWS SSO
+        Directory Service
+      Rastreabilidade
+        CloudTrail - quem chamou
+        CloudWatch - comportamento
+        VPC Flow Logs - tráfego
+        Config - estado do recurso
     1.2 Cargas e aplicações seguras
       VPC REGIONAL
         Subnet ZONAL
@@ -89,11 +102,9 @@ mindmap
 | Aula | Data | Ramos que acrescentou |
 |---|---|---|
 | [Domain 1 Review](d1-review/01-resumo.md) | 2026-07-19 | Estrutura completa das três declarações de tarefa — todos os ramos acima |
+| ↳ módulo 5 corrigido | 2026-07-19 | Tipos de política, role vs. usuário, Service Catalog, Directory Service e os serviços de monitoramento |
 
 ## Lacunas do domínio
-- **Módulo 5 do Domain 1 Review ("Encerramento") tem transcrição trocada** — texto em inglês sobre processo criativo. Recuperar no Skill Builder.
-- **Serviços de rastreabilidade não nomeados** na revisão: CloudTrail, AWS Config, CloudWatch. Cobrados conceitualmente, ausentes do texto.
-- **Organizations vs. Control Tower vs. SCP** — citados sem diferenciação.
 - **A aula não traz nenhum valor quantitativo** — define escopo, não detalhe. Os números foram levantados na documentação e incorporados a `d1-review/02-conteudo.md`: durações do STS (12 h / 36 h), banda de VPN (1,25 Gbps por túnel) e Direct Connect (1/10/100 Gbps), preço do Shield Advanced (US$ 3.000/mês), rotação do KMS (365 dias, faixa 90–2560), renovação do ACM (60 dias antes).
 - **Resolvidos pela documentação:** lógica de avaliação de políticas do IAM · simétrica vs. assimétrica · rotação por tipo de chave · renovação no ACM · Shield Standard vs. Advanced · NACL da VPC padrão vs. personalizada · KMS vs. CloudHSM.
 - **Ainda em aberto:** RTO por estratégia de DR · impacto quantitativo da criptografia em desempenho.

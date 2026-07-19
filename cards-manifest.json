@@ -13,7 +13,9 @@ Dois detalhes descobertos na prática, ambos verificados contra o site publicado
 1. `site.static_files` NÃO inclui os estáticos de uma coleção. É preciso
    percorrer `site.collections` e pegar `.files` da coleção.
 2. Os estáticos de coleção seguem o prefixo do permalink da coleção, então
-   /_estudo/d1/x.csv é publicado em /estudo/d1/x.csv.
+   _estudo/d1/x.csv é publicado em /estudo/d1/x.csv.
+3. `arq.path` da coleção vem SEM barra inicial — daí os índices começarem em 1
+   e o replace não usar barra à esquerda.
 {%- endcomment -%}
 {%- assign colecao = site.collections | where: "label", "estudo" | first -%}
 [
@@ -21,10 +23,10 @@ Dois detalhes descobertos na prática, ambos verificados contra o site publicado
 {%- for arq in colecao.files -%}
   {%- unless arq.extname == ".csv" -%}{%- continue -%}{%- endunless -%}
   {%- assign partes = arq.path | split: "/" -%}
-  {%- assign dominio = partes[2] -%}
-  {%- assign aula = partes[3] -%}
+  {%- assign dominio = partes[1] -%}
+  {%- assign aula = partes[2] -%}
   {%- assign meta = site.estudo | where: "aula", aula | first -%}
-  {%- assign url = arq.path | replace: "/_estudo/", "/estudo/" -%}
+  {%- assign url = arq.path | replace: "_estudo/", "/estudo/" -%}
   {%- if primeiro == false -%},{%- endif -%}
   {"arquivo":"{{ url }}","dominio":"{{ dominio }}","aula":"{{ aula }}","titulo":{% if meta %}{{ meta.titulo | jsonify }}{% else %}"{{ aula }}"{% endif %}}
   {%- assign primeiro = false -%}

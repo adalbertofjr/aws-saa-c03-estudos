@@ -8,21 +8,23 @@ O Liquid só enxerga metadados de arquivos estáticos, não o conteúdo — ent�
 listamos os caminhos aqui e o navegador busca cada CSV. Assim o CSV continua
 sendo a única fonte: Anki e site leem exatamente o mesmo arquivo.
 
-Atenção à assimetria: o permalink /estudo/:path/ vale para os DOCUMENTOS.
-Arquivos estáticos de coleção (os .csv) ignoram permalink e são escritos com
-o diretório da coleção removido — /_estudo/d1/x.csv vira /d1/x.csv. Por isso
-o replace abaixo remove o segmento inteiro, e não apenas o underscore.
+Dois detalhes descobertos na prática, ambos verificados contra o site publicado:
+
+1. `site.static_files` NÃO inclui os estáticos de uma coleção. É preciso
+   percorrer `site.collections` e pegar `.files` da coleção.
+2. Os estáticos de coleção seguem o prefixo do permalink da coleção, então
+   /_estudo/d1/x.csv é publicado em /estudo/d1/x.csv.
 {%- endcomment -%}
-{%- assign csvs = site.static_files | where: "extname", ".csv" -%}
+{%- assign colecao = site.collections | where: "label", "estudo" | first -%}
 [
 {%- assign primeiro = true -%}
-{%- for csv in csvs -%}
-  {%- unless csv.path contains "_estudo/" -%}{%- continue -%}{%- endunless -%}
-  {%- assign partes = csv.path | split: "/" -%}
+{%- for arq in colecao.files -%}
+  {%- unless arq.extname == ".csv" -%}{%- continue -%}{%- endunless -%}
+  {%- assign partes = arq.path | split: "/" -%}
   {%- assign dominio = partes[2] -%}
   {%- assign aula = partes[3] -%}
   {%- assign meta = site.estudo | where: "aula", aula | first -%}
-  {%- assign url = csv.path | replace: "/_estudo/", "/" -%}
+  {%- assign url = arq.path | replace: "/_estudo/", "/estudo/" -%}
   {%- if primeiro == false -%},{%- endif -%}
   {"arquivo":"{{ url }}","dominio":"{{ dominio }}","aula":"{{ aula }}","titulo":{% if meta %}{{ meta.titulo | jsonify }}{% else %}"{{ aula }}"{% endif %}}
   {%- assign primeiro = false -%}

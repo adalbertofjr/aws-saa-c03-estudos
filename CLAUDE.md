@@ -77,17 +77,29 @@ omitir os limites e comparações que o exame cobra.
 
 **Regra ativa:** onde a aula apenas *levanta uma pergunta sem respondê-la* (ex.: "por que
 usar KMS em vez de CloudHSM?", "qual a diferença entre Shield Standard e Advanced?"),
-pesquisar na documentação AWS e **completar a resposta**, marcada com `[fora da
-transcrição]`. Uma pergunta retórica do instrutor é um pedido de estudo dirigido — deixá-la
-em aberto transfere para a véspera do exame um trabalho que cabia aqui.
+pesquisar na documentação AWS e **completar a resposta**, marcada com `[doc]` e com a fonte
+listada no fim de `02-conteudo.md`. Uma pergunta retórica do instrutor é um pedido de estudo
+dirigido — deixá-la em aberto transfere para a véspera do exame um trabalho que cabia aqui.
 
-Duas restrições permanecem:
-- Toda afirmação fora da transcrição leva o rótulo `[fora da transcrição]`, para você saber
-  o que veio da aula e o que veio de mim.
-- **Nunca inventar números.** Limite, SLA ou preço sem respaldo na transcrição e sem
-  confirmação na documentação → marcar `⚠️ LACUNA:` e seguir. Um número errado memorizado
-  em flashcard custa mais caro que uma lacuna conhecida. `⚠️ LACUNA` fica reservado para
-  isto: o que **não foi possível** confirmar — não para o que dava trabalho pesquisar.
+Toda afirmação fora da transcrição leva marcador — ver **Procedência**, abaixo.
+
+**Nunca inventar números.** Limite, SLA ou preço sem respaldo na transcrição e sem
+confirmação na documentação → marcar `⚠️ LACUNA:` e seguir. Um número errado memorizado em
+flashcard custa mais caro que uma lacuna conhecida.
+
+## Procedência: os quatro marcadores
+
+Todo fato no dossiê carrega sua origem, para você saber em que confiar:
+
+| Marcador | Significa | Confiabilidade |
+|---|---|---|
+| *(sem marcador)* | veio da transcrição | o que a aula afirmou |
+| `†` ou `[fora da transcrição]` | conhecimento meu, não verificado nesta sessão | tratar com ceticismo |
+| `[doc]` | **confirmado na documentação AWS**, com a fonte listada no fim de `02-conteudo.md` | pode memorizar |
+| `⚠️ LACUNA` | **não foi possível confirmar** | buraco conhecido, não preencher de cabeça |
+
+`⚠️` nunca é usado para o que apenas dava trabalho pesquisar, nem para nuances já
+confirmadas — só para o que permanece em aberto.
 
 ## Contrato do CSV para Anki
 
@@ -141,20 +153,6 @@ Validar em mermaid.live ou no preview do VS Code antes de considerar pronto.
 4. Importar o CSV no Anki: *File → Import*, tipo de nota `Basic`, deck `SAA-C03`.
    Se o modelo `Basic` não tiver campo Extra, concatenar Extra no fim do Verso.
 5. Registrar em `revisao/log.md`.
-
-## Procedência: os quatro marcadores
-
-Todo fato no dossiê carrega sua origem, para você saber em que confiar:
-
-| Marcador | Significa | Confiabilidade |
-|---|---|---|
-| *(sem marcador)* | veio da transcrição | o que a aula afirmou |
-| `†` ou `[fora da transcrição]` | conhecimento meu, não verificado nesta sessão | tratar com ceticismo |
-| `[doc]` | **confirmado na documentação AWS**, com a fonte listada no fim de `02-conteudo.md` | pode memorizar |
-| `⚠️ LACUNA` | **não foi possível confirmar** | buraco conhecido, não preencher de cabeça |
-
-`⚠️` nunca é usado para o que apenas dava trabalho pesquisar, nem para nuances já
-confirmadas — só para o que permanece em aberto.
 
 ## Coerência entre os cinco artefatos
 

@@ -12,7 +12,8 @@
 > Se for o segundo, vira item de lista.
 >
 > **Perguntas retóricas do instrutor são tarefa, não decoração.** Onde a aula pergunta sem
-> responder, pesquisar na documentação AWS e completar, marcando `[fora da transcrição]`.
+> responder, pesquisar na documentação AWS e completar, marcando `[doc]` e listando a fonte
+> na seção final do arquivo.
 
 ## Contexto: por que este assunto existe
 <O problema de arquitetura que motiva o tema. Duas ou três frases. Sem isto, os serviços
@@ -55,9 +56,15 @@ transforma aulas isoladas em um modelo mental do domínio.>
 - <o que ainda não entendi — verificar na documentação ou nos simulados.>
 
 ## Lacunas
-- ⚠️ LACUNA: <o que a transcrição não cobriu.>
+- ⚠️ LACUNA: <o que a transcrição não cobriu e não foi possível confirmar.>
+
+## Fontes das respostas `[doc]`
+<Um link por afirmação marcada [doc]. Sem esta seção, o marcador não vale nada — é o que
+separa "confirmei" de "acho que me lembro".>
+- [Título da página](URL)
 
 <!--
-Marcar toda afirmação que não veio da transcrição com [fora da transcrição].
-Nunca inventar limites, SLAs ou preços.
+Marcadores de procedência: sem marca = transcrição · [fora da transcrição] ou † =
+conhecimento não verificado · [doc] = confirmado na documentação, com fonte listada ·
+⚠️ LACUNA = não foi possível confirmar. Nunca inventar limites, SLAs ou preços.
 -->

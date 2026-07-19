@@ -1,6 +1,16 @@
-# Serviços AWS — <título da aula>
-
-**Domínio:** <d1..d4> · **Fonte:** Skill Builder — <curso> · **Processado em:** <AAAA-MM-DD>
+---
+layout: dossie
+titulo: "<título da aula>"
+dominio: <d1..d4|geral>
+aula: <slug>
+tipo: <review|practice|simulearn|simulado>
+fonte: "Skill Builder — <curso>"
+processado: <AAAA-MM-DD>
+cards: <n>
+artefato: 03-servicos
+secao: Serviços AWS
+ordem: 3
+---
 
 ## Referência
 
@@ -32,4 +42,4 @@
 definição novamente — geram card de discriminação no contexto desta aula.>
 
 ## Novos no índice
-<Serviços que entram pela primeira vez em `estudo/_indice-servicos.md`.>
+<Serviços que entram pela primeira vez em `_estudo/00-indice-servicos.md`.>

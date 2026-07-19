@@ -1,0 +1,56 @@
+---
+layout: default
+titulo: Flashcards
+permalink: /flashcards/
+---
+<h1>Flashcards</h1>
+<p class="fonte">Os mesmos cards do Anki, lidos direto dos CSVs. Nada é duplicado.</p>
+
+<p id="contexto" class="tag" hidden></p>
+
+<div class="fc-barra">
+  <select id="f-dominio" aria-label="Filtrar por domínio">
+    <option value="">Todos os domínios</option>
+    <option value="d1">D1 · Seguras</option>
+    <option value="d2">D2 · Resilientes</option>
+    <option value="d3">D3 · Alto desempenho</option>
+    <option value="d4">D4 · Custo otimizado</option>
+  </select>
+  <select id="f-tipo" aria-label="Filtrar por tipo de card">
+    <option value="">Todos os tipos</option>
+    <option value="disc">Discriminação (X vs Y)</option>
+    <option value="cen">Cenário</option>
+    <option value="num">Número / limite</option>
+    <option value="def">Definição</option>
+  </select>
+  <label><input type="checkbox" id="f-vencidos"> só vencidos</label>
+</div>
+
+<p class="fc-progresso" id="resumo">carregando…</p>
+
+<div class="carta" id="carta">carregando…</div>
+
+<button class="revelar" id="revelar">Revelar resposta <small>(espaço)</small></button>
+
+<div class="fc-acoes" id="acoes" hidden>
+  <button class="errei"   data-q="0">Errei    <small>1</small></button>
+  <button class="dificil" data-q="3">Difícil  <small>2</small></button>
+  <button class="bom"     data-q="4">Bom      <small>3</small></button>
+  <button class="facil"   data-q="5">Fácil    <small>4</small></button>
+</div>
+
+<p class="fc-progresso" id="restantes"></p>
+
+<div class="aviso">
+  <p><strong>O progresso fica neste dispositivo</strong> e não sincroniza com o Anki nem
+  entre celular e computador. Este site é para revisar em qualquer lugar; o agendamento
+  sério continua no Anki.</p>
+  <p style="margin-bottom:0">
+    <button class="botao" id="exportar">Exportar progresso</button>
+    <label class="botao" for="importar">Importar progresso</label>
+    <input type="file" id="importar" accept="application/json" hidden>
+    <button class="botao" id="zerar">Zerar</button>
+  </p>
+</div>
+
+<script type="module" src="{{ '/assets/flashcards.js' | relative_url }}"></script>

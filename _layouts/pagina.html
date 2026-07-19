@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<article>
+  <h1>{{ page.titulo }}</h1>
+  <p class="meta">
+    {% if page.dominio %}<span class="tag dominio-{{ page.dominio }}">{{ page.dominio | upcase }}</span>{% endif %}
+    {% if page.peso %}<span class="tag">{{ page.peso }}% do exame</span>{% endif %}
+    {% if page.tipo %}<span class="tag">{{ page.tipo }}</span>{% endif %}
+  </p>
+  {{ content }}
+</article>

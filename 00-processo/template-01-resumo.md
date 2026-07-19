@@ -1,6 +1,16 @@
-# Resumo — <título da aula>
-
-**Domínio:** <d1..d4> · **Fonte:** Skill Builder — <curso> · **Processado em:** <AAAA-MM-DD>
+---
+layout: dossie
+titulo: "<título da aula>"
+dominio: <d1..d4|geral>
+aula: <slug>
+tipo: <review|practice|simulearn|simulado>
+fonte: "Skill Builder — <curso>"
+processado: <AAAA-MM-DD>
+cards: <n>
+artefato: 01-resumo
+secao: Resumo
+ordem: 1
+---
 
 ## Em uma frase
 <O que esta aula ensina a decidir.>

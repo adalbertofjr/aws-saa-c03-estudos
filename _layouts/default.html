@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.titulo %}{{ page.titulo }} · {% endif %}{{ site.title }}</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
+</head>
+<body data-base="{{ site.baseurl }}">
+<header class="topo">
+  <a class="marca" href="{{ '/' | relative_url }}">☁️ SAA-C03</a>
+  <nav>
+    <a href="{{ '/estudo/00-indice-servicos/' | relative_url }}">Serviços</a>
+    <a href="{{ '/flashcards/' | relative_url }}">Flashcards</a>
+  </nav>
+</header>
+
+<main>
+{{ content }}
+</main>
+
+<footer class="rodape">
+  <p>Material de estudo pessoal. Sem afiliação com a Amazon Web Services.</p>
+</footer>
+
+<script src="{{ '/assets/mermaid-init.js' | relative_url }}" type="module"></script>
+</body>
+</html>

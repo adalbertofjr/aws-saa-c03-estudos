@@ -1,6 +1,10 @@
-# Mapa acumulado — Criação de arquiteturas com custo otimizado
-
-**Domínio 4 do SAA-C03** · Peso no exame: 20%
+---
+layout: pagina
+titulo: "Mapa do domínio 4: Criação de arquiteturas com custo otimizado"
+dominio: d4
+peso: 20
+tipo: mapa-dominio
+---
 
 > Mapa vivo. Cada aula processada acrescenta ramos aqui. Este é o diagrama para revisar
 > na véspera — o mapa individual de cada aula fica em `<slug>/04-mapa-mental.md`.

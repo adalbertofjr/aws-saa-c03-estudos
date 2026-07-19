@@ -1,6 +1,16 @@
-# Conteúdo de estudo — <título da aula>
-
-**Domínio:** <d1..d4> · **Fonte:** Skill Builder — <curso> · **Processado em:** <AAAA-MM-DD>
+---
+layout: dossie
+titulo: "<título da aula>"
+dominio: <d1..d4|geral>
+aula: <slug>
+tipo: <review|practice|simulearn|simulado>
+fonte: "Skill Builder — <curso>"
+processado: <AAAA-MM-DD>
+cards: <n>
+artefato: 02-conteudo
+secao: Conteúdo de estudo
+ordem: 2
+---
 
 > Este é o material de leitura. Deve ser compreensível sem a transcrição e sem o vídeo.
 > Escreva em prosa, não em bullets soltos — a transcrição já é fala fragmentada; o valor

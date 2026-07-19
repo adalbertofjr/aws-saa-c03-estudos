@@ -1,0 +1,28 @@
+---
+layout: default
+---
+{% assign irmaos = site.estudo | where: "aula", page.aula | sort: "ordem" %}
+<article class="dossie">
+  <h1>{{ page.titulo }}</h1>
+  <p class="meta">
+    <span class="tag dominio-{{ page.dominio }}">{{ page.dominio | upcase }}</span>
+    <span class="tag">{{ page.tipo }}</span>
+    {% if page.fonte %}<span class="fonte">{{ page.fonte }}</span>{% endif %}
+    {% if page.processado %}<span class="fonte">processado em {{ page.processado }}</span>{% endif %}
+  </p>
+
+  <nav class="artefatos" aria-label="Artefatos deste dossiê">
+    {% for irmao in irmaos %}
+      {% if irmao.artefato == page.artefato %}
+        <span class="atual">{{ irmao.ordem }}. {{ irmao.secao }}</span>
+      {% else %}
+        <a href="{{ irmao.url | relative_url }}">{{ irmao.ordem }}. {{ irmao.secao }}</a>
+      {% endif %}
+    {% endfor %}
+    <a class="cta" href="{{ '/flashcards/' | relative_url }}?aula={{ page.aula }}">
+      5. Flashcards{% if page.cards %} ({{ page.cards }}){% endif %} →
+    </a>
+  </nav>
+
+  {{ content }}
+</article>

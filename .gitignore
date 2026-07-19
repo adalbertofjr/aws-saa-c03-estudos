@@ -1,0 +1,9 @@
+# Transcrições do AWS Skill Builder — material licenciado de curso pago.
+# Ficam apenas na máquina local; nunca são versionadas, porque este
+# repositório é público para servir o GitHub Pages.
+transcricoes/
+
+# Config local do Claude Code
+.claude/
+
+.DS_Store

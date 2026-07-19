@@ -1,6 +1,10 @@
-# Mapa acumulado — Criação de arquiteturas seguras
-
-**Domínio 1 do SAA-C03** · Peso no exame: 30%
+---
+layout: pagina
+titulo: "Mapa do domínio 1: Criação de arquiteturas seguras"
+dominio: d1
+peso: 30
+tipo: mapa-dominio
+---
 
 > Mapa vivo. Cada aula processada acrescenta ramos aqui. Este é o diagrama para revisar
 > na véspera — o mapa individual de cada aula fica em `<slug>/04-mapa-mental.md`.

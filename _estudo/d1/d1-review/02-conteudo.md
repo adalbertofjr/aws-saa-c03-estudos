@@ -1,6 +1,16 @@
-# Conteúdo de estudo — Domain 1 Review: Criação de arquiteturas seguras
-
-**Domínio:** d1 (30%) · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
+---
+layout: dossie
+titulo: "Domain 1 Review: Criação de arquiteturas seguras"
+dominio: d1
+aula: d1-review
+tipo: review
+fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
+processado: 2026-07-19
+cards: 63
+artefato: 02-conteudo
+secao: Conteúdo de estudo
+ordem: 2
+---
 
 > **Tipo: Review** — a aula define escopo, não ensina. Este arquivo é enxuto por isso.
 > As respostas que a aula deixou em aberto foram completadas pela documentação AWS e estão

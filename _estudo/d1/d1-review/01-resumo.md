@@ -1,6 +1,16 @@
-# Resumo — Domain 1 Review: Criação de arquiteturas seguras
-
-**Domínio:** d1 (~30% do exame) · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
+---
+layout: dossie
+titulo: "Domain 1 Review: Criação de arquiteturas seguras"
+dominio: d1
+aula: d1-review
+tipo: review
+fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
+processado: 2026-07-19
+cards: 63
+artefato: 01-resumo
+secao: Resumo
+ordem: 1
+---
 
 ## Em uma frase
 Segurança não é um tópico do exame — é um critério de desempate em **todos** os tópicos:

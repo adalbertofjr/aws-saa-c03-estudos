@@ -1,6 +1,16 @@
-# Serviços AWS — Domain 1 Review: Criação de arquiteturas seguras
-
-**Domínio:** d1 · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
+---
+layout: dossie
+titulo: "Domain 1 Review: Criação de arquiteturas seguras"
+dominio: d1
+aula: d1-review
+tipo: review
+fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
+processado: 2026-07-19
+cards: 63
+artefato: 03-servicos
+secao: Serviços AWS
+ordem: 3
+---
 
 Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcrição] ·
 `[doc]` = confirmado na documentação AWS (fontes em `02-conteudo.md`) · `⚠️` = lacuna aberta.
@@ -148,4 +158,4 @@ Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
 Nenhum — esta é a primeira aula processada.
 
 ## Novos no índice
-Todos os acima. `estudo/_indice-servicos.md` atualizado com 30 entradas.
+Todos os acima. `_estudo/00-indice-servicos.md` atualizado com 30 entradas.

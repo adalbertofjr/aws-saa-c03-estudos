@@ -19,7 +19,7 @@ Ler a transcrição bruta em `transcricoes/<dominio>/<slug>.md` e extrair, sem i
 
 ### P — Plan
 Antes de escrever:
-1. **Inventariar os serviços** da aula e conferir contra `estudo/_indice-servicos.md`.
+1. **Inventariar os serviços** da aula e conferir contra `_estudo/00-indice-servicos.md`.
    Serviço já visto **não** gera card de definição de novo — gera card de *discriminação*
    contra o novo contexto. Sem esse passo, 18 treinamentos que reciclam os mesmos serviços
    produzem centenas de cards duplicados.
@@ -28,12 +28,12 @@ Antes de escrever:
    3+ frases, o lugar dela é `02-conteudo.md`, não um card.
 
 ### I — Implement
-Gerar os 5 artefatos, atualizar os dois acumuladores (`_indice-servicos.md` e
-`<dominio>/_mapa-dominio.md`) e registrar em `revisao/log.md`.
+Gerar os 5 artefatos, atualizar os dois acumuladores (`00-indice-servicos.md` e
+`<dominio>/00-mapa-dominio.md`) e registrar em `revisao/log.md`.
 
 ## Os 5 artefatos
 
-Para `transcricoes/<dominio>/<slug>.md`, gerar em `estudo/<dominio>/<slug>/`:
+Para `transcricoes/<dominio>/<slug>.md`, gerar em `_estudo/<dominio>/<slug>/`:
 
 | # | Arquivo | Propósito |
 |---|---|---|
@@ -49,9 +49,9 @@ Para `transcricoes/<dominio>/<slug>.md`, gerar em `estudo/<dominio>/<slug>/`:
 Templates correspondentes em `00-processo/template-0N-*.md`.
 
 ### Acumuladores (atualizados a cada aula)
-- `estudo/_indice-servicos.md` — todos os serviços vistos até agora, com link para as
+- `_estudo/00-indice-servicos.md` — todos os serviços vistos até agora, com link para as
   aulas onde aparecem. É a folha de consulta única da semana do exame.
-- `estudo/<dominio>/_mapa-dominio.md` — mapa mental do domínio inteiro, crescendo a cada
+- `_estudo/<dominio>/00-mapa-dominio.md` — mapa mental do domínio inteiro, crescendo a cada
   aula. Mostra como o conteúdo novo se encaixa no anterior.
 
 ## Densidade: deixar a fonte mandar
@@ -167,11 +167,51 @@ Checklist ao revisar qualquer artefato:
 1. O fato mudou em `02-conteudo.md`? → conferir `01-resumo.md` e `03-servicos.md`.
 2. Uma `⚠️ LACUNA` foi respondida? → **remover a marca em todos os arquivos**, não só onde
    escrevi a resposta, e trocar por `[doc]`.
-3. O discriminador de um serviço mudou? → atualizar `estudo/_indice-servicos.md`, incluindo
+3. O discriminador de um serviço mudou? → atualizar `_estudo/00-indice-servicos.md`, incluindo
    o **mapa de decisão rápida**.
 4. Card afetado? → corrigir a linha no CSV **e reimportar** (o Anki atualiza pela Frente
    idêntica; Frente alterada cria card novo e deixa o antigo órfão).
-5. `grep -rn "⚠️" estudo/<dominio>/<slug>/` — o que sobrar deve ser lacuna real.
+5. `grep -rn "⚠️" _estudo/<dominio>/<slug>/` — o que sobrar deve ser lacuna real.
+
+## Publicação (GitHub Pages)
+
+O repositório é **público** e serve o site em
+`https://adalbertofjr.github.io/aws-saa-c03-estudos/`. Isso impõe duas regras.
+
+**`transcricoes/` nunca é versionada.** É material licenciado de curso pago da AWS —
+publicá-lo seria redistribuição indevida. Está no `.gitignore` e foi purgada do histórico.
+Vive apenas na máquina local. O que se publica é o material derivado: os dossiês.
+
+**Todo dossiê nasce com front matter**, senão o Jekyll não o renderiza (arquivo sem front
+matter é copiado como estático). Os `.md` ficam em `_estudo/` — o underscore é exigência de
+coleção do Jekyll, e arquivos iniciados por `_` são ignorados na build, por isso os
+acumuladores usam o prefixo `00-`.
+
+```yaml
+---
+layout: dossie          # dossie para os artefatos; pagina para acumuladores
+titulo: "Domain 1 Review: Criação de arquiteturas seguras"
+dominio: d1             # d1..d4 | geral
+aula: d1-review         # o slug — agrupa os artefatos de uma mesma aula
+tipo: review            # review | practice | simulearn | simulado
+fonte: "Skill Builder — ..."
+processado: 2026-07-19
+cards: 63
+artefato: 01-resumo     # 01-resumo | 02-conteudo | 03-servicos | 04-mapa-mental
+secao: Resumo           # rótulo na navegação
+ordem: 1                # 1..4
+---
+```
+
+O front matter **substitui** a linha de metadados em prosa que abria os arquivos — o layout
+a renderiza a partir dele. Fonte única, conforme a seção anterior. A home monta o índice e a
+contagem a partir desses campos; nada de lista mantida à mão.
+
+**O site não é um sexto artefato.** Ele renderiza os cinco — não duplica conteúdo. O player
+de flashcards lê os mesmos `05-flashcards.csv` que o Anki importa.
+
+Após processar uma aula, conferir que ela aparece na home depois do build do Pages
+(`gh api repos/adalbertofjr/aws-saa-c03-estudos/pages/builds/latest --jq .status`).
 
 ## Regras invioláveis
 
@@ -180,6 +220,7 @@ Checklist ao revisar qualquer artefato:
   plataforma, boas-vindas do instrutor).
 - Um dossiê por aula. Não misturar aulas diferentes num CSV ou numa pasta.
 - Não reescrever transcrições brutas em `transcricoes/` — são registro imutável.
+- **Nunca versionar `transcricoes/`.** Repositório público, material licenciado.
 - Sempre atualizar os dois acumuladores ao processar uma aula. Acumulador desatualizado
   quebra o passo de deduplicação da fase Plan.
 - **Nunca deixar dois artefatos do mesmo dossiê se contradizendo.** Revisou um, propaga

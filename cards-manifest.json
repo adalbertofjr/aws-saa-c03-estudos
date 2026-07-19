@@ -1,0 +1,28 @@
+---
+layout: null
+permalink: /cards-manifest.json
+---
+{%- comment -%}
+Manifesto dos CSVs de flashcards, montado na build a partir dos arquivos reais.
+O Liquid só enxerga metadados de arquivos estáticos, não o conteúdo — então
+listamos os caminhos aqui e o navegador busca cada CSV. Assim o CSV continua
+sendo a única fonte: Anki e site leem exatamente o mesmo arquivo.
+
+O Jekyll publica os estáticos de uma coleção sem o underscore do diretório:
+/_estudo/... no fonte vira /estudo/... no site.
+{%- endcomment -%}
+{%- assign csvs = site.static_files | where: "extname", ".csv" -%}
+[
+{%- assign primeiro = true -%}
+{%- for csv in csvs -%}
+  {%- unless csv.path contains "_estudo/" -%}{%- continue -%}{%- endunless -%}
+  {%- assign partes = csv.path | split: "/" -%}
+  {%- assign dominio = partes[2] -%}
+  {%- assign aula = partes[3] -%}
+  {%- assign meta = site.estudo | where: "aula", aula | first -%}
+  {%- assign url = csv.path | replace: "/_estudo/", "/estudo/" -%}
+  {%- if primeiro == false -%},{%- endif -%}
+  {"arquivo":"{{ url }}","dominio":"{{ dominio }}","aula":"{{ aula }}","titulo":{% if meta %}{{ meta.titulo | jsonify }}{% else %}"{{ aula }}"{% endif %}}
+  {%- assign primeiro = false -%}
+{%- endfor -%}
+]

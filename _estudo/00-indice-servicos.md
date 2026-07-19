@@ -1,4 +1,8 @@
-# Índice acumulado de serviços AWS
+---
+layout: pagina
+titulo: "Índice acumulado de serviços AWS"
+tipo: indice
+---
 
 Todos os serviços vistos em qualquer aula. **Folha de consulta única para a semana do exame.**
 

@@ -1,6 +1,16 @@
-# Mapa mental — Domain 1 Review: Criação de arquiteturas seguras
-
-**Domínio:** d1 · **Processado em:** 2026-07-19
+---
+layout: dossie
+titulo: "Domain 1 Review: Criação de arquiteturas seguras"
+dominio: d1
+aula: d1-review
+tipo: review
+fonte: "Skill Builder — Domain 1 Review (SAA-C03 PT-BR)"
+processado: 2026-07-19
+cards: 63
+artefato: 04-mapa-mental
+secao: Mapa mental
+ordem: 4
+---
 
 ## Mapa da aula
 
@@ -109,4 +119,4 @@ serviço de conectividade" não resolve nada.
 
 ## Ao terminar
 
-Atualizado em `estudo/d1/_mapa-dominio.md`.
+Atualizado em `_estudo/d1/00-mapa-dominio.md`.

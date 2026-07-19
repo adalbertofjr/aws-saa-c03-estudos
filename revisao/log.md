@@ -1,11 +1,11 @@
 # Log de processamento e revisão
 
 Uma linha por aula processada, após os 5 artefatos estarem gerados e os dois acumuladores
-atualizados. `Serviços novos` = quantos entraram em `estudo/_indice-servicos.md`.
+atualizados. `Serviços novos` = quantos entraram em `_estudo/00-indice-servicos.md`.
 
-| Data | Domínio | Aula | Cards | Serviços novos | Importado | Lacunas |
-|---|---|---|---|---|---|---|
-| 2026-07-19 | d1 | [Domain 1 Review](../estudo/d1/d1-review/01-resumo.md) | 63 | 42 | ☐ | Módulo 5 com transcrição trocada; RTO e impacto de cripto em desempenho |
+| Data | Domínio | Aula | Cards | Serviços novos | Anki | Publicado | Lacunas |
+|---|---|---|---|---|---|---|---|
+| 2026-07-19 | d1 | [Domain 1 Review](../_estudo/d1/d1-review/01-resumo.md) | 63 | 42 | ☐ | ☑ | Módulo 5 com transcrição trocada; RTO e impacto de cripto em desempenho |
 
 ## Trilha planejada (18 treinamentos)
 
@@ -48,4 +48,4 @@ atualizados. `Serviços novos` = quantos entraram em `estudo/_indice-servicos.md
 
 ## Erros recorrentes
 Anotar aqui o que erro nos simulados. Cada erro repetido vira um flashcard de
-discriminação em `estudo/geral/erros/05-flashcards.csv`.
+discriminação em `_estudo/geral/erros/05-flashcards.csv`.

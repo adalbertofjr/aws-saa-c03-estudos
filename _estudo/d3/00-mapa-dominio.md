@@ -1,6 +1,10 @@
-# Mapa acumulado — Criação de arquiteturas de alto desempenho
-
-**Domínio 3 do SAA-C03** · Peso no exame: 24%
+---
+layout: pagina
+titulo: "Mapa do domínio 3: Criação de arquiteturas de alto desempenho"
+dominio: d3
+peso: 24
+tipo: mapa-dominio
+---
 
 > Mapa vivo. Cada aula processada acrescenta ramos aqui. Este é o diagrama para revisar
 > na véspera — o mapa individual de cada aula fica em `<slug>/04-mapa-mental.md`.

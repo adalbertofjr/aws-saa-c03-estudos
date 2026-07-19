@@ -1,0 +1,35 @@
+title: Estudos SAA-C03
+description: Dossiês de estudo e flashcards para o AWS Certified Solutions Architect – Associate
+lang: pt-BR
+
+# jekyll-relative-links converte links .md relativos nos permalinks corretos.
+# É um dos plugins habilitados por padrão no GitHub Pages — mantém os arquivos
+# navegáveis tanto no VS Code/Obsidian quanto no site, sem duplicar caminhos.
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+
+collections:
+  estudo:
+    output: true
+    permalink: /:path/
+
+defaults:
+  - scope: { path: "", type: estudo }
+    values: { layout: pagina }
+
+# Fora da build: processo interno, log pessoal e as transcrições
+# (que nem sequer são versionadas — ver .gitignore).
+exclude:
+  - 00-processo/
+  - transcricoes/
+  - revisao/
+  - CLAUDE.md
+  - README.md
+  - .claude/
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge

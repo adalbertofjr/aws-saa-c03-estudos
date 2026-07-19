@@ -1,6 +1,16 @@
-# Mapa mental — <título da aula>
-
-**Domínio:** <d1..d4> · **Processado em:** <AAAA-MM-DD>
+---
+layout: dossie
+titulo: "<título da aula>"
+dominio: <d1..d4|geral>
+aula: <slug>
+tipo: <review|practice|simulearn|simulado>
+fonte: "Skill Builder — <curso>"
+processado: <AAAA-MM-DD>
+cards: <n>
+artefato: 04-mapa-mental
+secao: Mapa mental
+ordem: 4
+---
 
 ## Mapa da aula
 
@@ -36,5 +46,5 @@ legenda de leitura envelhece mal.>
 
 ## Ao terminar
 
-Atualizar também `estudo/<dominio>/_mapa-dominio.md`, encaixando os ramos desta aula no
+Atualizar também `_estudo/<dominio>/00-mapa-dominio.md`, encaixando os ramos desta aula no
 mapa acumulado do domínio.

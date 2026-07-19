@@ -15,7 +15,7 @@ quando duas respostas resolvem o requisito, a mais segura é a correta.
 
 ## Decisões e trade-offs
 - **Secrets Manager vs. Parameter Store** — Secrets Manager quando houver **rotação automática** de credenciais em intervalo definido. Parameter Store para configuração sem rotação.
-- **KMS vs. CloudHSM** — [fora da transcrição] CloudHSM quando exigirem HSM dedicado de tenant único e controle total das chaves; KMS no resto (gerenciado, integrado aos serviços).
+- **KMS vs. CloudHSM** — `[doc]` CloudHSM quando exigirem **single-tenancy sob seu controle** ou as interfaces **PKCS#11/JCE**; KMS no resto. O argumento do FIPS caducou — ver `02-conteudo.md`.
 - **PrivateLink vs. VPC Peering** — Peering não escala (sobrecarga de gerenciamento) e **expõe as demais aplicações** da VPC emparelhada. PrivateLink expõe *uma* aplicação a dezenas/centenas de VPCs sem IGW, NAT ou peering.
 - **EBS criptografado vs. transferir para S3 criptografado** — para dados gerados numa instância com volume EBS, o **menor esforço é criptografar o próprio volume EBS**.
 - **Política de identidade vs. de recurso** — identidade controla *quais recursos* aquela identidade acessa; recurso controla *quem* acessa aquele recurso. A política de recurso tem o elemento `Principal`; a de identidade não.

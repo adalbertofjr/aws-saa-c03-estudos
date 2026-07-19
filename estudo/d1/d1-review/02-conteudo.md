@@ -197,7 +197,7 @@ documento, aplicação). **Algoritmo** — recebe texto simples **e chave**, pro
 geradas no seu cluster e **nunca saem dos HSMs em texto claro**, mas você mantém a integração
 do KMS.
 
-⚠️ **Nuance atual:** o argumento clássico "CloudHSM porque preciso de FIPS 140-2 Nível 3"
+`[doc]` **Nuance atual:** o argumento clássico "CloudHSM porque preciso de FIPS 140-2 Nível 3"
 **caducou** — o KMS já é **FIPS 140-3 Nível 3**. O SAA-C03 pode ainda testar o enquadramento
 antigo; hoje o discriminador honesto é **single-tenancy sob controle do cliente** e
 **PKCS#11/JCE**, não o FIPS.

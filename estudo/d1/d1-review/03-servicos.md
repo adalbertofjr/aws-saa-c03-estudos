@@ -2,16 +2,17 @@
 
 **Domínio:** d1 · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
 
-Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcrição] · `⚠️` = lacuna.
+Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcrição] ·
+`[doc]` = confirmado na documentação AWS (fontes em `02-conteudo.md`) · `⚠️` = lacuna aberta.
 
 ## Identidade e acesso
 
 | Serviço | O que é | Papel nesta aula | Quando usar | Quando NÃO usar (alternativa) | Limites / números | Tags Anki |
 |---|---|---|---|---|---|---|
 | **AWS IAM** | Controle de quem pode fazer o quê nos recursos AWS | Base da tarefa 1.1 | Sempre — identidades e permissões dentro da conta | Identidades já existentes fora da AWS → federação via role | **Serviço global**; identidades nascem **sem permissões** | `d1 IAM def` |
-| **AWS STS** | Emite credenciais temporárias | Assumir roles dentro e entre contas | Acesso temporário, cross-account, federação | Acesso permanente de carga interna → role atribuída ao serviço | ⚠️ duração dos tokens não citada | `d1 STS def` |
+| **AWS STS** | Emite credenciais temporárias | Assumir roles dentro e entre contas | Acesso temporário, cross-account, federação | Acesso permanente de carga interna → role atribuída ao serviço | **AssumeRole 12 h**; GetSessionToken 36 h `[doc]` | `d1 STS num` |
 | **Amazon Cognito** | Identidade para aplicações; SSO e federação de IDs | Citado como fonte provável de questão de cenário | Autenticar usuários de app web/mobile e dar credenciais AWS | Federação de funcionários corporativos → IAM Identity Center / AD † | user pools vs. identity pools | `d1 Cognito disc` |
-| **AWS Single Sign-On** | Acesso centralizado a múltiplas contas/apps | Citado na lista de integração de segurança | Funcionários acessando várias contas AWS | Usuários finais de aplicação → Cognito † | ⚠️ hoje chamado IAM Identity Center † | `d1 SSO def` |
+| **AWS Single Sign-On** | Acesso centralizado a múltiplas contas/apps | Citado na lista de integração de segurança | Funcionários acessando várias contas AWS | Usuários finais de aplicação → Cognito † | Hoje chamado IAM Identity Center † | `d1 SSO def` |
 | **AWS Organizations** | Gestão de múltiplas contas | Estratégia de segurança multi-conta | Consolidar contas e aplicar SCPs | Conta única | ⚠️ não diferenciado na aula | `d1 Organizations def` |
 | **AWS Control Tower** | Landing zone multi-conta governada | Impor padrões de segurança | Provisionar ambiente multi-conta com guardrails | Já existe Organizations maduro † | ⚠️ não diferenciado na aula | `d1 ControlTower def` |
 | **SCP** | Política que limita o **máximo** de permissões de contas na organização | Impor padrões que a conta-membro não contorna | Teto de permissão organizacional | Conceder permissão — SCP **não concede**, só limita † | Aplica-se a Organizations | `d1 SCP disc` |
@@ -30,16 +31,16 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 | **AWS PrivateLink** | Expõe **um serviço** a muitas VPCs/contas | Resolve exposição de aplicação | Expor app a **dezenas/centenas** de VPCs sem peering | Poucas VPCs, integração ampla de rede → peering | Sem IGW, NAT ou peering | `d1 PrivateLink disc` |
 | **VPC Peering** | Conecta duas VPCs | Contraexemplo do PrivateLink | Integração ponto a ponto entre poucas VPCs | Escala → **sobrecarga de gerenciamento** e **expõe as demais apps** | Não é transitivo † | `d1 VPC disc` |
 | **Transit Gateway** | Hub de conexão de rede | Citado na lista de conectividade | Conectar muitas VPCs e on-premises em topologia hub-and-spoke † | Expor um único serviço → PrivateLink † | ⚠️ não detalhado | `d1 TransitGateway def` |
-| **Site-to-Site VPN** | Túnel IPsec on-premises ↔ VPC | Conexão privada externa | Conectar data center à VPC pela internet, criptografado | Banda dedicada e latência estável → Direct Connect † | ⚠️ capacidade não citada | `d1 VPN disc` |
-| **Client VPN** | VPN de usuário final para a VPC | Conexão privada externa | Acesso remoto de indivíduos | Conexão de rede inteira → Site-to-Site † | ⚠️ não detalhado | `d1 VPN disc` |
-| **Direct Connect** | Link físico dedicado para a AWS | Conexão privada externa | Banda alta, latência consistente, tráfego previsível † | Precisa subir rápido / baixo custo → VPN † | ⚠️ capacidade não citada | `d1 DirectConnect disc` |
+| **Site-to-Site VPN** | Túnel IPsec on-premises ↔ VPC | Conexão privada externa | Conectar data center à VPC pela internet, criptografado | Banda dedicada e latência estável → Direct Connect † | **1,25 Gbps/túnel** (opção 5 Gbps), **2 túneis** `[doc]` | `d1 VPN num` |
+| **Client VPN** | VPN de usuário final para a VPC | Conexão privada externa | Acesso remoto de indivíduos | Conexão de rede inteira → Site-to-Site † | Acesso remoto individual | `d1 VPN disc` |
+| **Direct Connect** | Link físico dedicado para a AWS | Conexão privada externa | Banda alta, latência consistente, tráfego previsível † | Precisa subir rápido / baixo custo → VPN † | **1/10/100 Gbps** dedicado; hosted 50 Mbps–10 Gbps; **sub-10 ms** `[doc]` | `d1 DirectConnect num` |
 
 ## Proteção de aplicações e segredos
 
 | Serviço | O que é | Papel nesta aula | Quando usar | Quando NÃO usar (alternativa) | Limites / números | Tags Anki |
 |---|---|---|---|---|---|---|
 | **AWS WAF** | Firewall de aplicação web | Proteção de camada 7 | **Injeção SQL**, XSS, regras HTTP | Ataque DDoS volumétrico → Shield | **Só em ALB, API Gateway e CloudFront** | `d1 WAF num` |
-| **AWS Shield** | Proteção contra DDoS | Proteção de camada de rede | Ataques **DDoS** externos | Ataque de aplicação → WAF | Standard vs. Advanced ⚠️ | `d1 Shield disc` |
+| **AWS Shield** | Proteção contra DDoS | Proteção de camada de rede | Ataques **DDoS** externos | Ataque de aplicação → WAF | Advanced: **US$ 3.000/mês** + 1 ano; cost protection e SRT `[doc]` | `d1 Shield num` |
 | **Amazon GuardDuty** | Detecção de ameaças | Citado na lista de integração | Detectar atividade maliciosa/anômala † | Classificar dados sigilosos → Macie | — | `d1 GuardDuty disc` |
 | **Amazon Macie** | ML para descobrir e classificar dados sigilosos | Serviço-resposta para **PII** | Encontrar PII **no S3** | Dados fora do S3 † | **Escopo: S3** | `d1 Macie cen` |
 | **AWS Secrets Manager** | Armazena segredos com rotação | Trade-off resolvido na aula | Alto volume + **alternância automática** de credenciais | Sem rotação, sensível a custo → Parameter Store | Força rotação em **intervalo de dias** | `d1 SecretsManager disc` |
@@ -49,9 +50,9 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 
 | Serviço | O que é | Papel nesta aula | Quando usar | Quando NÃO usar (alternativa) | Limites / números | Tags Anki |
 |---|---|---|---|---|---|---|
-| **AWS KMS** | Gerenciamento de chaves | "Estude a fundo" — ênfase explícita | Padrão para chaves; integrado aos serviços | Exige HSM dedicado / FIPS de tenant único → CloudHSM † | Chaves raiz vs. chaves de dados ⚠️ | `d1 KMS disc` |
-| **AWS CloudHSM** | HSM dedicado | Contraparte do KMS | Controle exclusivo das chaves, exigência regulatória † | Caso geral → KMS † | Tenant único † | `d1 CloudHSM disc` |
-| **AWS Certificate Manager** | Provisiona e renova certificados | Criptografia **em trânsito** | TLS em ALB, CloudFront, API Gateway † | — | ⚠️ mecânica de renovação | `d1 ACM def` |
+| **AWS KMS** | Gerenciamento de chaves | "Estude a fundo" — ênfase explícita | Padrão para chaves; integrado aos serviços | Exige **single-tenancy** ou PKCS#11/JCE → CloudHSM `[doc]` | Rotação **365 d** (90–2560), só simétricas `[doc]` | `d1 KMS num` |
+| **AWS CloudHSM** | HSM dedicado | Contraparte do KMS | Controle exclusivo das chaves, exigência regulatória † | Caso geral → KMS `[doc]` | Tenant único; PKCS#11 e JCE `[doc]` | `d1 CloudHSM disc` |
+| **AWS Certificate Manager** | Provisiona e renova certificados | Criptografia **em trânsito** | TLS em ALB, CloudFront, API Gateway † | — | Renova **60 d antes**, se em uso e CNAME publicado `[doc]` | `d1 ACM num` |
 | **AWS Artifact** | Portal de documentos de conformidade | Requisitos de conformidade | Baixar relatórios de auditoria e acordos **sob demanda** | Monitoramento operacional de segurança † | Autoatendimento | `d1 Artifact cen` |
 
 ## Armazenamento, backup e DR
@@ -129,7 +130,10 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 | Integração com serviços AWS | ampla † | limitada † |
 | **Escolha CloudHSM quando** | — | exigência regulatória de controle exclusivo da chave † |
 
-⚠️ A aula levanta a comparação como pergunta e **não a responde**. Confirmar na documentação.
+`[doc]` **Nuance atual:** o argumento "CloudHSM porque preciso de FIPS 140-2 Nível 3" caducou — o
+KMS já é **FIPS 140-3 Nível 3**. O discriminador honesto hoje é **single-tenancy sob controle
+do cliente** e as interfaces **PKCS#11/JCE**. O SAA-C03 pode ainda testar o enquadramento antigo.
+Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
 
 ### Níveis de resiliência (armadilha clássica)
 | Recurso | Nível |

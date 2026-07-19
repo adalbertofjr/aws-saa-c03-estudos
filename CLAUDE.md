@@ -38,7 +38,7 @@ Para `transcricoes/<dominio>/<slug>.md`, gerar em `estudo/<dominio>/<slug>/`:
 | # | Arquivo | Propósito |
 |---|---|---|
 | 1 | `01-resumo.md` | 1 página orientada a decisão. Primeira leitura e revisão de véspera. |
-| 2 | `02-conteudo.md` | Material didático: a aula reescrita como texto de estudo. 3–8 páginas. |
+| 2 | `02-conteudo.md` | Material didático: a aula reescrita como texto de estudo. Extensão conforme a fonte — ver abaixo. |
 | 3 | `03-servicos.md` | Tabela de referência dos serviços AWS da aula + pares confundíveis. |
 | 4 | `04-mapa-mental.md` | Mermaid `mindmap` da aula. |
 | 5 | `05-flashcards.csv` | Anki, 15–30 cards. |
@@ -54,15 +54,40 @@ Templates correspondentes em `00-processo/template-0N-*.md`.
 - `estudo/<dominio>/_mapa-dominio.md` — mapa mental do domínio inteiro, crescendo a cada
   aula. Mostra como o conteúdo novo se encaixa no anterior.
 
+## Densidade: deixar a fonte mandar
+
+O erro a evitar é **inflar prosa sobre material fino**. Uma aula de *Review* define escopo
+— diz o que estudar, sem ensinar. Transformá-la em 10 páginas produz texto de enchimento
+que ninguém relê. Calibrar por tipo de fonte:
+
+| Tipo de aula | `02-conteudo.md` | Por quê |
+|---|---|---|
+| **Review** (revisão de domínio) | **3–4 páginas, enxutas** | É um checklist de escopo. Preferir tabelas e listas a parágrafos explicativos. |
+| **Practice** (questões comentadas) | **8–10 páginas** | Há conteúdo real: cada questão traz raciocínio de eliminação e justificativa. |
+| **SimuLearn** (laboratório) | **5–8 páginas** | Cenário + implementação. Registrar as decisões de arquitetura e os passos do lab. |
+| **Simulados / Question Sets** | **conforme os erros** | Só o que você errou merece texto. Acertos viram uma linha. |
+
+Teste antes de escrever um parágrafo: *isto ensina algo, ou só reafirma que o tópico
+existe?* Se for o segundo, vira item de lista.
+
 ## Conteúdo além da transcrição
 
-Enriquecer é permitido e desejável — a transcrição é fala corrida e costuma omitir limites
-e comparações que o exame cobra. Duas regras:
+Enriquecer é **esperado**, não apenas permitido — a transcrição é fala corrida e costuma
+omitir os limites e comparações que o exame cobra.
 
-- Toda afirmação que **não** está na transcrição leva o rótulo `[fora da transcrição]`.
+**Regra ativa:** onde a aula apenas *levanta uma pergunta sem respondê-la* (ex.: "por que
+usar KMS em vez de CloudHSM?", "qual a diferença entre Shield Standard e Advanced?"),
+pesquisar na documentação AWS e **completar a resposta**, marcada com `[fora da
+transcrição]`. Uma pergunta retórica do instrutor é um pedido de estudo dirigido — deixá-la
+em aberto transfere para a véspera do exame um trabalho que cabia aqui.
+
+Duas restrições permanecem:
+- Toda afirmação fora da transcrição leva o rótulo `[fora da transcrição]`, para você saber
+  o que veio da aula e o que veio de mim.
 - **Nunca inventar números.** Limite, SLA ou preço sem respaldo na transcrição e sem
-  certeza da documentação AWS → marcar `⚠️ LACUNA:` e seguir. Um número errado memorizado
-  em flashcard custa mais caro que uma lacuna conhecida.
+  confirmação na documentação → marcar `⚠️ LACUNA:` e seguir. Um número errado memorizado
+  em flashcard custa mais caro que uma lacuna conhecida. `⚠️ LACUNA` fica reservado para
+  isto: o que **não foi possível** confirmar — não para o que dava trabalho pesquisar.
 
 ## Contrato do CSV para Anki
 

@@ -5,6 +5,14 @@
 > Este é o material de leitura. Deve ser compreensível sem a transcrição e sem o vídeo.
 > Escreva em prosa, não em bullets soltos — a transcrição já é fala fragmentada; o valor
 > aqui é reorganizá-la em texto que se sustenta.
+>
+> **Extensão conforme a fonte:** Review 3–4 pág (enxuto, tabelas > parágrafos) ·
+> Practice 8–10 pág · SimuLearn 5–8 pág · Simulado: só os erros.
+> Teste por parágrafo: *isto ensina algo, ou só reafirma que o tópico existe?*
+> Se for o segundo, vira item de lista.
+>
+> **Perguntas retóricas do instrutor são tarefa, não decoração.** Onde a aula pergunta sem
+> responder, pesquisar na documentação AWS e completar, marcando `[fora da transcrição]`.
 
 ## Contexto: por que este assunto existe
 <O problema de arquitetura que motiva o tema. Duas ou três frases. Sem isto, os serviços

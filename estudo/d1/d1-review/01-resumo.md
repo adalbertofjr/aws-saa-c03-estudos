@@ -44,6 +44,15 @@ quando duas respostas resolvem o requisito, a mais segura é a correta.
 - **AWS Artifact** é o portal de autoatendimento para baixar documentos de conformidade e acordos — não é ferramenta de segurança operacional.
 - **Storage Gateway** é a resposta padrão para **ambientes híbridos**.
 
+## Respondido pela documentação (ver `02-conteudo.md`)
+A aula levanta várias perguntas sem respondê-las. Foram completadas e viraram cards:
+lógica de avaliação de políticas do IAM · durações do STS · NACL padrão vs. personalizada ·
+Shield Standard vs. Advanced (custo e recursos) · KMS vs. CloudHSM e uso conjunto · rotação
+de chaves · simétrica vs. assimétrica · renovação no ACM · Direct Connect vs. VPN.
+
 ## Lacunas
 - ⚠️ **A transcrição do módulo 5 ("Encerramento do domínio 1") está trocada** — traz um texto em inglês sobre processo criativo, sem relação com AWS. Recuperar no Skill Builder se houver conteúdo real.
-- ⚠️ LACUNA: a aula cita *que* estudar, mas não entrega os detalhes de — lógica de decisão de avaliação de políticas do IAM; diferença simétrica vs. assimétrica; frequência de rotação por tipo de chave; capacidade/resiliência de Site-to-Site VPN, Client VPN e Direct Connect; renovação de certificados no ACM; RPO/RTO por estratégia de DR. Todos precisam da documentação AWS.
+- ⚠️ Rastreabilidade é cobrada sem que a aula nomeie CloudTrail, Config ou CloudWatch.
+- ⚠️ Organizations vs. Control Tower citados sem diferenciação — estudar separadamente.
+- ⚠️ Impacto quantitativo da criptografia em desempenho (RDS + KMS, leitura do S3): sem valores publicados utilizáveis.
+- ⚠️ RTO não é mencionado na aula, apenas RPO.

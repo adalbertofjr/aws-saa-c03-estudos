@@ -1,496 +1,312 @@
 # Conteúdo de estudo — Domain 1 Review: Criação de arquiteturas seguras
 
-**Domínio:** d1 · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
+**Domínio:** d1 (30%) · **Fonte:** Skill Builder — Domain 1 Review (SAA-C03 PT-BR) · **Processado em:** 2026-07-19
 
-## Contexto: por que este assunto existe
+> **Tipo: Review** — a aula define escopo, não ensina. Este arquivo é enxuto por isso.
+> As respostas que a aula deixou em aberto foram completadas pela documentação AWS e estão
+> marcadas com `[doc]`; a fonte de cada uma está no fim.
 
-O Domínio 1 vale cerca de 30% do exame, mas seu peso real é maior: a AWS recomenda que
-segurança seja considerada em **cada estágio, nível e camada** da arquitetura, e não apenas
-nas questões marcadas como "de segurança". Na prática do exame isso vira uma regra de
-desempate — quando duas alternativas atendem ao requisito funcional, a mais segura é a
-correta.
+## Contexto
 
-Esta aula é uma *revisão de escopo*, não um tutorial. O instrutor percorre as três
-declarações de tarefa dizendo o que você precisa dominar. Boa parte do valor está em tratar
-as perguntas retóricas dele como um checklist de autoavaliação — elas estão preservadas
-abaixo, em **Perguntas em aberto**.
+A AWS recomenda segurança em **cada estágio, nível e camada** da arquitetura, não só nas
+questões marcadas como "de segurança". No exame isso vira regra de desempate: **quando duas
+alternativas atendem ao requisito funcional, a mais segura é a correta.**
 
----
-
-## 1. Contas da AWS e o usuário raiz
-
-### O que é
-A conta AWS é a fronteira de cobrança e de isolamento de recursos. O instrutor destaca que
-contas são "negligenciadas no estudo por parecerem básicas demais" — e as classifica como
-fundamento obrigatório.
-
-### Como funciona
-Toda conta nasce com **um único usuário raiz, com permissões totais**. O risco é estrutural:
-essas permissões **não podem ser alteradas**. Não existe "limitar o root". Logo, se o usuário
-raiz for comprometido, todo o ambiente AWS está comprometido — não há contenção possível.
-
-Daí decorrem as duas mitigações:
-1. **MFA no usuário raiz** — reduz a chance de comprometimento.
-2. **Não usar o raiz no dia a dia** — criar identidades IAM adicionais com permissões
-   limitadas para o trabalho corrente. É a aplicação direta do menor privilégio.
-
-### O gancho de exame
-Enunciados com "seguindo as práticas recomendadas da AWS" combinados a qualquer operação
-rotineira → a resposta que usa o usuário raiz está errada por definição.
+Três declarações de tarefa: **1.1** acesso seguro aos recursos · **1.2** cargas e aplicações
+seguras · **1.3** controles de segurança de dados.
 
 ---
 
-## 2. IAM: identidades, políticas e o princípio do menor privilégio
+## 1.1 — Acesso seguro aos recursos
 
-### O que é
-O IAM é o serviço que define quem (ou o quê) pode fazer o quê nos seus recursos AWS.
+### Conta e usuário raiz
+- Toda conta nasce com **um usuário raiz de permissões totais que NÃO podem ser alteradas**.
+  Não existe "limitar o root" — comprometê-lo compromete todo o ambiente, sem contenção.
+- Mitigações: **MFA** no raiz e **não usá-lo no dia a dia**, criando identidades IAM limitadas.
+- **Gancho:** "seguindo as práticas recomendadas" + operação rotineira → alternativa que usa o
+  raiz está errada por definição.
 
-### Fato de resiliência
-**O IAM é um serviço global** — protege os dados do IAM em todas as Regiões da AWS. Compare
-com VPC (regional) e subnet (zonal); o instrutor cobra os três explicitamente, e o exame usa
-esse nível de serviço para eliminar alternativas.
+### Níveis de resiliência (armadilha recorrente)
+| IAM | VPC | Subnet |
+|---|---|---|
+| **Global** | **Regional** | **Zonal (AZ)** |
 
-### Como funciona
-As identidades — **usuários, grupos e roles** — **começam sem nenhuma permissão**. Permissões
-são concedidas conforme a necessidade. Esse padrão *deny-by-default* é o menor privilégio
-implementado no próprio produto.
-
-O **princípio do menor privilégio** conceder apenas o acesso necessário. Seu efeito, segundo o
-instrutor, é **limitar o alcance do impacto de uma intercorrência de segurança**: uma
-credencial vazada com escopo estreito compromete pouco. Ele reaparece na tarefa 1.3 como base
-da proteção de dados, o que confirma seu papel de conceito transversal.
+### Identidades
+- **Usuários, grupos e roles nascem sem nenhuma permissão** — *deny by default*.
+- **Menor privilégio:** seu efeito declarado é **limitar o alcance do impacto** de um
+  incidente. Credencial vazada com escopo estreito compromete pouco.
 
 ### Políticas
-> **Uma política é um objeto na AWS que, quando associado a uma identidade ou a um recurso,
-> define suas permissões.**
-
-Dois tipos, e a distinção é a mais cobrada do tema:
-
-| | Política **baseada em identidade** | Política **baseada em recurso** |
+| | **Identidade** | **Recurso** |
 |---|---|---|
-| Anexada a | usuário, grupo ou role do IAM | ao próprio recurso |
-| Responde | *quais recursos* esta identidade pode acessar | *quem* pode acessar este recurso |
-| Elemento `Principal` | **ausente** | **presente** — é a diferença estrutural |
-| Exemplos de alvo | — | bucket S3, fila SQS, endpoint de VPC, chave do KMS |
+| Anexada a | usuário, grupo, role | bucket S3, fila SQS, endpoint VPC, chave KMS |
+| Responde | *quais recursos* eu acesso | *quem* acessa este recurso |
+| `Principal` | **ausente** | **presente** — é o diferenciador estrutural |
 
-O instrutor observa que políticas de bucket são "estruturadas de maneira diferente" das de
-identidade, e localiza a diferença exatamente na parte do **`Principal`**, que define quais
-principals a política afeta.
+Nível exigido: **ler e interpretar** políticas, não escrever avançadas.
 
-### Nível exigido pelo exame
-Explícito na aula: **você não precisa saber escrever políticas avançadas, mas precisa ler e
-interpretar** documentos de política. O que deve dominar: as principais partes de uma
-declaração, o que é obrigatório, como as políticas dão granularidade e — importante — a
-**lógica de decisão do IAM** quando uma identidade tem várias políticas anexadas.
-⚠️ LACUNA: essa lógica de avaliação é citada mas não explicada. Ver documentação.
+**[doc] Lógica de avaliação, na ordem:**
+1. **Negação implícita** — tudo é negado por padrão.
+2. **Negação explícita em qualquer política vence tudo.** Nenhum `Allow` a reverte.
+3. Sem deny explícito, basta **um** `Allow` aplicável.
+4. Com **SCP**, o resultado é a **interseção**: a ação precisa ser permitida pela política de
+   identidade **e** pela SCP. **SCP nunca concede permissão — só limita o teto.**
+5. **Permissions boundary** também é interseção com a política de identidade.
 
-### Confusão a evitar
-Identidade controla *o que eu alcanço*; recurso controla *quem me alcança*. Em cenários
-cross-account, a política de recurso costuma ser a peça que falta.
+### Credenciais e federação
+- **Hardcode de credenciais: nunca.** Usar roles, inclusive atribuídas a serviços AWS.
+- **STS** emite credenciais temporárias — dentro da conta, entre contas e em federação.
+  **[doc]** `AssumeRole` até **12 h**; `GetSessionToken` até **36 h** (1 h para o raiz).
+- **Federação:** usuários com identidade no diretório corporativo ou IdP de terceiros recebem
+  permissões via **role do IAM**. Cobra-se configurar **Active Directory** para federar.
+- **Gancho:** "usuários já existem no diretório corporativo" → role + federação + STS.
+  Criar usuários IAM permanentes é a alternativa errada.
 
----
+### Governança multi-conta
+**Organizations** (container das contas) · **Control Tower** (landing zone com guardrails) ·
+**SCP** (teto de permissões).
+**Rastreabilidade** = monitorar, alertar e auditar ações e alterações **em tempo real**, com
+coleta de registros e métricas integrada a sistemas que investigam e agem automaticamente.
+**Gancho:** "impor padrão que o admin da conta-membro não contorne" → SCP.
 
-## 3. Credenciais, STS e federação
-
-### Nunca hardcode
-A aula faz a pergunta e responde categoricamente: *quando você deve codificar credenciais de
-forma rígida na aplicação?* → **Nunca.** É uma das poucas respostas absolutas do exame. A
-alternativa é conceder acesso via **role**, inclusive atribuindo roles a serviços da AWS.
-
-### AWS STS
-O **Security Token Service** emite credenciais temporárias. Estudar seu uso **dentro de uma
-conta e entre contas**, e como roles são usadas com federação.
-
-### Federação
-Cenário motivador da aula: seus usuários já têm identidade fora da AWS — um diretório
-corporativo, por exemplo — e precisam acessar recursos AWS. Solução: **uma role do IAM
-especifica as permissões para usuários com identidade federada**, vindos da sua organização
-ou de um provedor de identidade (IdP) de terceiros. O instrutor cobra saber projetar e
-configurar **Active Directory** para federar acesso a usuários/roles do IAM.
-
-### O gancho de exame
-"Usuários já existentes no diretório corporativo", "sem criar usuários IAM individuais",
-"acesso temporário" → role + federação + STS. Se a alternativa cria usuários IAM permanentes
-para gente que já tem identidade em outro lugar, está errada.
+⚠️ A transcrição **não nomeia** CloudTrail, Config nem CloudWatch, embora cobre o conceito.
 
 ---
 
-## 4. Governança multi-conta e rastreabilidade
-
-### O que é
-Acima da conta individual há a estratégia organizacional. A aula nomeia três: **AWS
-Organizations**, **AWS Control Tower** e **Service Control Policies (SCP)**.
-
-### Rastreabilidade
-Definida como a capacidade de **monitorar, alertar e auditar ações e alterações no ambiente
-em tempo real**, além de integrar coleta de registros e métricas com sistemas que investigam e
-agem automaticamente. O argumento do instrutor: assim como você monitora desempenho da
-aplicação, precisa de visibilidade sobre **quem e o que acessa** recursos e dados.
-
-### O gancho de exame
-Você será testado em: criar estratégias de segurança para **várias contas**, obter
-visibilidade, **impor padrões de segurança**, e alertar/automatizar a partir desses dados.
-"Impor padrões que nem o administrador da conta-membro possa contornar" → SCP.
-
-⚠️ LACUNA: a aula cita Organizations, Control Tower e SCP sem diferenciá-los. Estudar
-separadamente — e note que os serviços de rastreabilidade concretos (CloudTrail, Config,
-CloudWatch) **não são nomeados** nesta transcrição, embora o conceito seja cobrado.
-
----
-
-## 5. VPC e segmentação de rede
-
-### Fato de resiliência
-**A VPC é regional** — quando criada, fica em uma Região e uma conta. **A subnet é zonal**,
-um recurso resiliente ao nível de Zona de Disponibilidade. Esses dois fatos aparecem em
-questões de alta disponibilidade no Domínio 2 também.
+## 1.2 — Cargas e aplicações seguras
 
 ### VPC padrão vs. personalizada
-Existem dois tipos e o exame cobra **as diferenças e como a segurança de cada uma é
-configurada inicialmente** — os filtros de segurança já vêm com configurações básicas
-distintas. ⚠️ LACUNA: a aula não detalha quais são.
+**[doc]** A diferença que o exame cobra está na **NACL**:
 
-### O que é uma subnet
-Onde os serviços ficam e são executados dentro da VPC; subnets acrescentam estrutura e
-funcionalidade. A distinção **pública vs. privada** é cobrada em três frentes: o que
-diferencia uma da outra, quando usar cada uma, e as práticas comuns de uso.
-[fora da transcrição] O que torna uma subnet pública é a rota para um Internet Gateway na
-tabela de rotas associada — não uma propriedade da subnet em si.
+| | Default VPC | VPC personalizada |
+|---|---|---|
+| **NACL** | regra 100 **ALLOW all** — permite tudo | só a regra `*` **DENY** — **nega tudo** até você criar regras |
+| **Security group padrão** | permite tráfego entre membros do próprio SG; nega o resto | idem |
 
-### Proteção de arquiteturas multicamadas
-Ao proteger camadas de aplicação, prestar atenção a quatro componentes e à **interação entre
-eles**: **security groups, network ACLs, tabelas de rota e NAT gateways**. Juntos dão
-controle sobre o tráfego de rede com a granularidade necessária.
+A regra `*` DENY existe em ambas e **não pode ser removida**.
 
-O instrutor pede explicitamente: como criar as regras, **as armadilhas a evitar**, a **lógica
-de processamento de regras**, e os métodos para melhor funcionalidade combinada.
+### Filtros de rede
+| | **Security Group** | **Network ACL** |
+|---|---|---|
+| Nível | instância / ENI | subnet |
+| Estado | **Stateful** — retorno liberado automaticamente | **Stateless** — exige regra de retorno explícita |
+| Regras | **só permitir** | permitir **e negar** |
+| Avaliação | todas as regras | **ordem numérica, 1–32766, para na primeira correspondência** |
 
-[fora da transcrição] O par mais cobrado: **security group é stateful** — tráfego de retorno é
-liberado automaticamente — e só admite regras de permissão. **NACL é stateless** — exige regra
-de saída explícita para o retorno — e avalia regras de permitir e negar em ordem numérica,
-parando na primeira correspondência.
+**[doc]** Como a NACL é stateless, o tráfego de retorno precisa de regra para as **portas
+efêmeras** — 1024-65535 cobre os casos comuns.
 
-### Cenário trabalhado na aula
-Tráfego origina-se on-premises, entra por uma **VPN**, e precisa alcançar servidores de
-aplicação numa **subnet privada** — mas esses servidores devem permanecer protegidos contra a
-internet pública. A configuração precisa liberar o fluxo nos níveis de **VPC, subnet e
-instância** sem abrir caminho para a internet. É o formato típico de questão do domínio: o
-requisito de conectividade e o de isolamento chegam juntos.
+### Segmentação
+- **Subnet** é onde os recursos rodam; acrescenta estrutura à VPC.
+- **[doc]** O que torna uma subnet **pública** é ter **rota para um Internet Gateway** na
+  tabela de rotas — não é propriedade da subnet.
+- Componentes a dominar **em conjunto**: security groups, NACLs, tabelas de rota, NAT gateways.
 
----
+### Conectividade privada
+| Opção | Uso | Armadilha |
+|---|---|---|
+| **VPC Endpoint** | alcançar serviço AWS **sem IGW nem NAT** | tráfego não sai para a internet |
+| **PrivateLink** | expor **um serviço** a dezenas/centenas de VPCs | — |
+| **VPC Peering** | integração entre poucas VPCs | **sobrecarga de gerenciamento** ao escalar e **expõe as demais apps** da VPC |
+| **Transit Gateway** | hub-and-spoke para muitas VPCs | — |
 
-## 6. Endpoints e PrivateLink
+**Cenário-tipo da aula:** tráfego vem de on-premises por VPN até servidores em subnet privada,
+que devem seguir protegidos da internet pública — a configuração precisa liberar o fluxo nos
+níveis de **VPC, subnet e instância** sem abrir caminho para a internet. Requisito de
+conectividade e de isolamento chegam sempre juntos.
 
-### O que é um endpoint de VPC
-Objetos de gateway criados **dentro da sua VPC** para conectar aos serviços públicos da AWS
-**sem precisar de Internet Gateway nem NAT Gateway**. O tráfego não sai para a internet.
+### Direct Connect vs. Site-to-Site VPN vs. Client VPN
+**[doc]**
 
-### O problema que o PrivateLink resolve
-Situação da aula: você tem uma aplicação e a torna pública. Agora ela está exposta na
-internet. Como protegê-la e ainda assim oferecê-la a outras VPCs, em outras contas?
+| | **Site-to-Site VPN** | **Direct Connect** | **Client VPN** |
+|---|---|---|---|
+| Meio | internet pública, IPsec | **circuito físico dedicado** | internet, usuário final |
+| Banda | **1,25 Gbps** por túnel (opção de 5 Gbps) | **1, 10 ou 100 Gbps** dedicado; hosted de 50 Mbps a 10 Gbps | — |
+| Latência | variável (depende da internet) | **consistente**, sub-10 ms | — |
+| Provisionamento | minutos | semanas (circuito físico) | minutos |
+| Redundância | **2 túneis** por conexão | exige segunda conexão | — |
+| Escolha quando | subir rápido, baixo custo, backup | banda alta, latência consistente, exigência regulatória de circuito privado | acesso remoto de **indivíduos** |
 
-**VPC Peering resolve mal**, por duas razões declaradas:
-1. Acrescenta **sobrecarga de gerenciamento** conforme você escala (a malha cresce).
-2. **Expõe as demais aplicações** da VPC às VPCs emparelhadas — o peering é da VPC inteira,
-   não de um serviço.
+Padrão recomendado: **Direct Connect + VPN como backup** — dedicado com fallback criptografado.
 
-**PrivateLink** é a forma segura e dimensionável de expor **uma** aplicação ou serviço a
-dezenas ou centenas de VPCs, sem peering, sem Internet Gateway, sem NAT Gateway.
+### Proteção de aplicação
+| Serviço | Trata | Escopo |
+|---|---|---|
+| **WAF** | camada 7 — **injeção SQL**, XSS | **só ALB, API Gateway e CloudFront** |
+| **Shield** | **DDoS** (camadas 3/4) | recursos de borda |
+| **GuardDuty** | **atividade** maliciosa na conta | — |
+| **Macie** | **dados** — descobre e classifica **PII no S3** com ML | **S3** |
 
-### O gancho de exame
-"Expor um serviço a muitas VPCs/contas", "sem atravessar a internet", "sem sobrecarga de
-gerenciamento" → PrivateLink. Se o enunciado enfatiza *escala* ou *não expor o resto da VPC*,
-peering é a alternativa-armadilha.
+**[doc] Shield Standard vs. Advanced:**
 
----
+| | Standard | Advanced |
+|---|---|---|
+| Custo | **grátis**, automático para todos | **US$ 3.000/mês** por organização + transferência, **compromisso de 1 ano** |
+| Cobre | ataques comuns de camada 3/4 (SYN/UDP flood, reflexão) | EC2, ELB, CloudFront, Global Accelerator, Route 53 |
+| Extras | — | monitoramento contínuo do tráfego, visibilidade quase em tempo real, integração com WAF, **DDoS cost protection** (créditos pelo custo do escalonamento durante ataque), **acesso 24/7 ao Shield Response Team** (planos Business/Enterprise) |
 
-## 7. Conectividade híbrida e privada
+**Gancho:** "proteção contra o custo do escalonamento durante um DDoS" ou "acesso à equipe de
+resposta" → só **Advanced** entrega isso.
 
-Três serviços a dominar para proteger conexões externas aos recursos na AWS — o instrutor os
-repete duas vezes na aula, sinal de peso:
+**PII** = nome, endereço, e-mail, CPF, carteira de motorista, passaporte, data de nascimento,
+conta bancária, cartão de crédito.
 
-- **AWS Site-to-Site VPN**
-- **AWS Client VPN**
-- **AWS Direct Connect**
+**Cognito:** **user pool** autentica (diretório da aplicação); **identity pool** entrega
+**credenciais AWS temporárias** via STS. A aula avisa que haverá questões de cenário.
 
-Além deles: **endpoints de serviço, PrivateLink, peering, transit gateway** e conexões VPN.
-
-Para cada um, estudar **capacidade, segurança e resiliência**. ⚠️ LACUNA: nenhum número de
-capacidade ou modelo de resiliência é fornecido na transcrição. É um dos pontos onde a
-documentação é obrigatória — e provavelmente o de maior retorno, já que o exame testa
-Direct Connect vs. VPN por banda, latência e custo.
-
----
-
-## 8. Serviços de proteção de aplicação e de dados sigilosos
-
-### Amazon Macie
-Serviço de segurança que usa **machine learning** para **descobrir, classificar e proteger
-dados sigilosos armazenados no S3**. A aula amarra Macie ao conceito de **PII** — dados
-pessoais que estabelecem a identidade do indivíduo: nome, endereço residencial, e-mail, CPF,
-carteira de motorista, passaporte, data de nascimento, conta bancária, cartão de crédito.
-
-**Gancho de exame:** enunciado com "identificar informações de identificação pessoal" +
-"armazenadas no S3" → Macie. A vinculação ao S3 é o discriminador.
-
-### Amazon Cognito
-Dominar **user pools** e **identity pools**, e como o Cognito agencia **Single Sign-On e
-federação de identidades**. A aula avisa que **haverá provavelmente questões baseadas em
-cenários** sobre casos de uso.
-[fora da transcrição] User pool = autenticação (o diretório de usuários da aplicação);
-identity pool = autorização na AWS (troca o token por credenciais temporárias via STS).
-
-### Shield e WAF
-Entender **a diferença entre Shield Standard e Shield Advanced**, e saber **quando escolher um
-serviço de segurança em detrimento de outro** — o exemplo dado contrapõe **ataques DDoS
-externos** a **ataques de injeção SQL**. [fora da transcrição] Shield trata DDoS (camadas de
-rede/transporte); WAF trata a camada de aplicação, incluindo injeção SQL e XSS.
-
-**Fato de escopo, muito cobrado:** o **AWS WAF só pode ser implantado em três serviços** —
-**Application Load Balancer, Amazon API Gateway e Amazon CloudFront**. Se a alternativa propõe
-WAF em outro lugar (numa instância EC2 avulsa, num NLB), está errada.
-
-### Secrets Manager vs. Systems Manager Parameter Store
-O trade-off é dado com resposta na aula. Cenário: armazenar um segredo com **acesso de alto
-volume e alternância automática de credenciais**.
-
-> O **AWS Secrets Manager** foi projetado para armazenar segredos melhor que o Parameter
-> Store, e **pode forçar a alternância dos segredos em um intervalo determinado de dias**.
-
-**Gancho de exame:** a palavra **rotação** (alternância automática) no enunciado decide a
-questão em favor do Secrets Manager. Sem rotação, Parameter Store costuma vencer por custo.
-
-### Também citados
-**AWS Single Sign-On**, **Amazon GuardDuty**, e o fundamento de **firewalls e servidores
-proxy**.
+**Secrets Manager vs. Parameter Store:** o Secrets Manager **força a alternância dos segredos
+em intervalo determinado de dias**. **A palavra "rotação" no enunciado decide a questão.**
+Sem rotação e com pressão de custo → Parameter Store.
 
 ---
 
-## 9. Criptografia: os fundamentos que o exame assume
+## 1.3 — Controles de segurança de dados
 
-### Os dois tipos
+### Criptografia — os dois tipos
 | | **Em repouso** | **Em trânsito** |
 |---|---|---|
-| Protege contra | acesso não autorizado e roubo | interceptação durante a transferência |
-| Situação | dados armazenados | dados entre dois locais |
+| Protege contra | acesso não autorizado e **roubo** | interceptação na transferência |
 | Partes envolvidas | geralmente **uma** | **duas ou mais** |
 
-Metáfora da aula: a criptografia **adiciona um túnel ao redor dos dados** para que ninguém de
-fora consiga lê-los.
+### Vocabulário
+**Texto simples** — dado **não criptografado**; *nem sempre é texto* (pode ser imagem,
+documento, aplicação). **Algoritmo** — recebe texto simples **e chave**, produz o cifrado.
+**Chave** — essencialmente uma senha. **Texto cifrado** — a saída.
 
-### Vocabulário obrigatório
-- **Texto simples (plaintext)** — dado **não criptografado**. Cuidado: *nem sempre é texto* —
-  pode ser documento, imagem, aplicação. O nome engana.
-- **Algoritmo** — o código que recebe o texto simples **e a chave** e produz o dado
-  criptografado. Precisa dos dois insumos.
-- **Chave** — essencialmente uma senha, usada com o algoritmo.
-- **Texto cifrado (ciphertext)** — o dado criptografado, saída do processo.
-- **Simétrica vs. assimétrica** — os dois tipos de chave e de criptografia a conhecer.
-  ⚠️ LACUNA: a aula nomeia mas não diferencia. [fora da transcrição] Simétrica usa a mesma
-  chave para cifrar e decifrar; assimétrica usa par pública/privada.
+**[doc] Simétrica vs. assimétrica:**
 
-### KMS e CloudHSM
-A aula formula as perguntas sem respondê-las — trate-as como roteiro de estudo:
-*por que usar KMS em vez de CloudHSM?* *como usá-los juntos?* *como gerenciar chaves entre
-Regiões?* *que tipos de chave existem e como diferem em capacidade?* *com que frequência é
-possível alternar cada tipo?* *como implementar políticas de acesso para chaves?*
-
-Fecha com uma orientação direta: **"estude a fundo o AWS KMS"**.
-
-[fora da transcrição] Resumo do discriminador: KMS é gerenciado, multi-tenant e integrado a
-praticamente todos os serviços; CloudHSM é um HSM dedicado de tenant único, para exigências
-regulatórias de controle exclusivo das chaves e validação FIPS.
-
-### AWS Certificate Manager
-Usado para **criptografar dados em trânsito**; saber **como os certificados são renovados**.
-⚠️ LACUNA: mecânica de renovação não detalhada.
-
----
-
-## 10. Criptografia no S3
-
-O S3 oferece criptografia em repouso e em trânsito, por **dois métodos**:
-
-**Client-side** — os objetos são criptografados **antes de os dados chegarem ao S3**. Você
-controla tudo.
-
-**Server-side** — os dados trafegam via **HTTPS** e, ao chegarem ao S3, **o próprio serviço os
-criptografa**. Três opções, todas cobradas:
-
-| Sigla | Quem fornece/gerencia a chave |
-|---|---|
-| **SSE-C** | chaves **fornecidas pelo cliente** |
-| **SSE-S3** | chaves **gerenciadas pelo Amazon S3** |
-| **SSE-KMS** | chaves do **AWS KMS** |
-
-**Gancho de exame:** "auditar cada uso da chave de criptografia" ou "controlar a política da
-chave" → SSE-KMS. "Sem gerenciar nada" → SSE-S3.
-
----
-
-## 11. Conformidade
-
-**Segurança e conformidade são responsabilidade compartilhada** entre AWS e cliente — o
-Modelo de Responsabilidade Compartilhada é pré-requisito declarado do domínio.
-
-**AWS Artifact** — portal de **autoatendimento para recuperação de artefatos de auditoria**,
-que dá **acesso sob demanda à documentação de conformidade e aos acordos da AWS**.
-**Gancho:** "o auditor pediu o relatório SOC/PCI" → Artifact. Não é serviço operacional.
-
-### AWS Cloud Adoption Framework — perspectiva de segurança
-Cinco capacidades principais, na ordem da aula:
-1. **IAM**
-2. **Controles de detecção**
-3. **Segurança de infraestrutura**
-4. **Proteção de dados**
-5. **Resposta a incidentes**
-
-### Os três passos de proteção de dados
-1. **Pensar** nos dados que se está protegendo: como são armazenados e **quem de fato tem
-   acesso**.
-2. **Classificar** — "nem todos os dados são criados da mesma forma"; a classificação
-   adequada precede a proteção adequada.
-3. **Defesa em profundidade** — **sobrepor múltiplos controles de segurança** para gerar
-   redundância, em duas categorias: **preventivos** e **de detecção**.
-
----
-
-## 12. Proteção por padrões de acesso e ciclo de vida
-
-Serviços como o S3 permitem gerenciar segurança não só do bucket inteiro, mas **por caminhos
-ou objetos específicos**. Saber quais serviços oferecem esse nível de granularidade, ler e
-criar políticas por padrão de acesso, e entender como o back-end do serviço as avalia.
-
-**Trade-off explícito da aula:** *quando usar S3 Lifecycle Configuration em vez de S3
-Intelligent-Tiering?* [fora da transcrição] Lifecycle quando o padrão de acesso é previsível
-— você escreve a regra por idade do objeto. Intelligent-Tiering quando é **imprevisível** — o
-S3 move o objeto entre camadas automaticamente, cobrando uma taxa de monitoramento.
-
-### Criptografia e desempenho
-Pergunta a levar a sério: **o uso de criptografia afeta o desempenho?** A orientação é estudar
-**quais serviços não sofrem impacto e quais sofrem impacto leve** — os exemplos citados são
-velocidade de recuperação de dados com **RDS + KMS** e leitura de dados do **S3**.
-⚠️ LACUNA: nenhum valor concreto é fornecido.
-
-### Cenário resolvido na aula
-Dados gerados numa instância que usa volume **EBS**, que precisam ser protegidos mantendo a
-durabilidade. Armazenar em volume EBS criptografado ou transferir para bucket S3
-criptografado? → **O menor esforço é o volume EBS criptografado.**
-O critério "menor esforço operacional" é recorrente no SAA-C03 e costuma eliminar a
-alternativa que move dados entre serviços.
-
----
-
-## 13. Armazenamento na nuvem: fundamentos
-
-> **Armazenamento na nuvem** é um modelo de computação em nuvem que armazena dados por meio de
-> um provedor que **gerencia e opera** o armazenamento **como um serviço**.
-
-**Benefícios:** não comprar hardware, não provisionar armazenamento, **sem despesas de
-capital**; implantação mais rápida; e políticas de **gerenciamento de ciclo de vida** que
-trazem automação, economia de custos e a capacidade de **bloquear dados para conformidade**.
-
-**Cinco requisitos básicos a planejar:** durabilidade, disponibilidade, segurança,
-regulamentação e governança, requisitos funcionais.
-
-**Três tipos de dados:** **objeto**, **arquivo**, **bloco**.
-
-**Cinco usos principais:** backup e recuperação; teste e desenvolvimento de software; migração
-de dados; conformidade; big data e data lakes.
-
----
-
-## 14. Recuperação de desastres
-
-A aula afirma que **DR representa "uma grande parte deste exame"** — apesar de a arquitetura
-resiliente ser o Domínio 2, o tema entra no Domínio 1 pelo lado da proteção de dados.
-
-### As quatro estratégias
-Em ordem crescente de custo e complexidade:
-
-| Estratégia | Modelo | Ideia |
+| | Simétrica | Assimétrica |
 |---|---|---|
-| **Backup & Restore** | ativo/passivo | baixo custo, baixa complexidade |
-| **Pilot Light** | ativo/passivo | núcleo mínimo pronto para crescer |
-| **Warm Standby** | ativo/passivo | ambiente reduzido porém funcional |
-| **Multi-Site Active/Active** | ativo/ativo | várias Regiões atendendo tráfego |
+| Chaves | **uma só** cifra e decifra | **par** pública/privada |
+| Velocidade | rápida | lenta |
+| Uso | volume de dados | troca de chaves, assinatura digital |
+| **Rotação automática no KMS** | **sim** | **não** |
 
-**Ativo/passivo** significa: um ambiente ativo (uma Região) hospeda a carga e atende tráfego;
-o **ambiente passivo** (outra Região) existe para DR e **não atende tráfego até que um evento
-de failover seja acionado**.
+### KMS vs. CloudHSM
+**[doc]**
 
-### Como escolher — o critério da aula
-Depende de **como você define desastre**:
-- Desastre = interrupção ou **perda de um data center físico**, numa carga bem arquitetada e
-  altamente disponível → **basta Backup & Restore**.
-- Desastre abrange a perda de **uma Região inteira**, **ou** há **requisitos regulatórios**
-  que exigem recuperação → considerar **Pilot Light, Warm Standby ou Multi-Site
-  Active/Active**.
+| | **KMS** | **CloudHSM** |
+|---|---|---|
+| Tenancy | **multi-tenant** gerenciado | **single-tenant dedicado** |
+| Integração com serviços AWS | ampla e nativa | limitada |
+| Custo e operação | menor, gerenciado | maior, hardware dedicado |
+| Interfaces | API AWS | **PKCS #11, JCE**, algoritmos especializados |
+| **Escolha quando** | caso geral — é o padrão do exame | exigirem HSM **sob seu controle**, PKCS#11/JCE, ou cripto especializada |
 
-### RPO
-> **A frequência com que você executa o backup determina o ponto de recuperação alcançável, que
-> deve se alinhar para atender ao RPO.**
+**Usar os dois juntos:** o CloudHSM pode servir de **custom key store** do KMS — as chaves são
+geradas no seu cluster e **nunca saem dos HSMs em texto claro**, mas você mantém a integração
+do KMS.
 
-O backup também precisa oferecer forma de **restaurar ao ponto no tempo em que foi feito**.
-⚠️ LACUNA: RTO não é mencionado; nem valores típicos de RPO/RTO por estratégia.
+⚠️ **Nuance atual:** o argumento clássico "CloudHSM porque preciso de FIPS 140-2 Nível 3"
+**caducou** — o KMS já é **FIPS 140-3 Nível 3**. O SAA-C03 pode ainda testar o enquadramento
+antigo; hoje o discriminador honesto é **single-tenancy sob controle do cliente** e
+**PKCS#11/JCE**, não o FIPS.
 
-### Mecanismos de backup por serviço
-Lista explícita da aula — vale memorizar que **cada um tem seu mecanismo nativo**:
-snapshot do **EBS**; backup do **DynamoDB**; snapshot do **RDS**; snapshot do **Aurora**;
-backup do **EFS** via AWS Backup; snapshot do **Redshift**; snapshot do **Neptune**;
-**DocumentDB**.
+**[doc] Rotação de chaves no KMS:** automática a cada **365 dias** por padrão, configurável
+entre **90 e 2560 dias**. **Só para chaves simétricas** — assimétricas, HMAC, material
+importado e custom key store exigem **rotação manual**. Chaves gerenciadas pela AWS rotacionam
+anualmente.
 
-**S3 é a exceção de formato:** usa **Cross-Region Replication (CRR)** para copiar objetos de
-forma **assíncrona e contínua** para um bucket na Região de DR — replicação, não snapshot.
+### ACM
+Criptografia **em trânsito**. **[doc] Renovação gerenciada:** o ACM renova automaticamente
+**60 dias antes do vencimento**, sob duas condições — o certificado precisa estar **em uso por
+um serviço AWS** e, na validação por DNS, os **registros CNAME fornecidos pelo ACM devem
+permanecer publicados**. Removeu o CNAME, a renovação falha. Alertas em 30, 15, 7, 3 e 1 dia.
 
-### AWS Backup
-**Local centralizado** para configurar, programar e monitorar backups. Cobertura declarada:
-volumes **EBS**, instâncias **EC2**, bancos **RDS** (incluindo Aurora), tabelas **DynamoDB**,
-sistemas de arquivos **EFS**, volumes do **Storage Gateway**, **FSx for Windows File Server** e
-**FSx for Lustre**. Suporta **cópia de backups entre Regiões**, inclusive para uma Região de DR.
+### Criptografia no S3
+**Client-side** — cifra **antes de os dados chegarem ao S3**; você controla tudo.
+**Server-side** — trafega por **HTTPS** e o próprio S3 cifra na chegada:
 
-**Gancho:** "gerenciamento centralizado de backup entre múltiplos serviços" → AWS Backup, não
-a soma dos mecanismos nativos.
+| **SSE-C** | **SSE-S3** | **SSE-KMS** |
+|---|---|---|
+| chave **fornecida pelo cliente** | chave **gerenciada pelo S3** | chave do **KMS** |
 
-### Ambientes híbridos
-Pergunta e resposta diretas da aula: *qual serviço usar para ambientes híbridos?* → **AWS
-Storage Gateway**.
+**Gancho:** "auditar cada uso da chave" ou "controlar a política da chave" → **SSE-KMS**.
+"Sem gerenciar nada" → SSE-S3.
+
+### Conformidade
+Segurança e conformidade são **responsabilidade compartilhada**.
+**AWS Artifact** — portal de **autoatendimento** para baixar documentação de conformidade e
+acordos sob demanda. **Gancho:** "o auditor pediu o relatório SOC/PCI". Não é operacional.
+
+**CAF, perspectiva de segurança — 5 capacidades:** IAM · controles de detecção · segurança de
+infraestrutura · proteção de dados · resposta a incidentes.
+
+**Três passos:** (1) saber quais dados existem, como são armazenados e **quem tem acesso**;
+(2) **classificar** — "nem todos os dados são criados da mesma forma"; (3) **defesa em
+profundidade** — sobrepor controles **preventivos** e **de detecção**.
+
+### Cenários resolvidos na aula
+- Dados gerados em instância com volume EBS, preservando durabilidade → **volume EBS
+  criptografado**, por ser o **menor esforço**. O critério "menor esforço operacional" é
+  recorrente e costuma eliminar a alternativa que move dados entre serviços.
+- **Lifecycle vs. Intelligent-Tiering:** Lifecycle quando o padrão de acesso é **previsível**
+  (regra por idade); Intelligent-Tiering quando é **imprevisível** — move automaticamente,
+  cobrando taxa de monitoramento.
+- Granularidade: o S3 permite controlar segurança **por caminho ou objeto**, não só por bucket.
+
+⚠️ **Criptografia e desempenho:** a aula manda estudar quais serviços sofrem impacto (cita RDS
++ KMS e leitura do S3) mas **não fornece nenhum valor**. Sem número confiável para memorizar.
+
+### Armazenamento e DR
+**Armazenamento na nuvem** — provedor **gerencia e opera** o armazenamento como serviço.
+Benefícios: sem hardware, sem provisionamento, **sem despesa de capital**; implantação rápida;
+ciclo de vida automatizado com **bloqueio de dados para conformidade**.
+
+**5 requisitos:** durabilidade, disponibilidade, segurança, regulamentação/governança,
+funcionais. **3 tipos de dados:** objeto, arquivo, bloco.
+**5 usos:** backup e recuperação · teste e desenvolvimento · migração · conformidade · big
+data e data lakes.
+
+**As 4 estratégias de DR**, em ordem de custo e complexidade:
+**Backup & Restore → Pilot Light → Warm Standby → Multi-Site Active/Active.**
+As três primeiras são **ativo/passivo**: o ambiente passivo **não atende tráfego até um evento
+de failover**.
+
+**Critério de escolha, conforme a definição de desastre:**
+- Perda de **um data center físico**, carga já bem arquitetada e altamente disponível →
+  **Backup & Restore basta**.
+- Perda de uma **Região inteira** **ou** exigência regulatória → Pilot Light, Warm Standby ou
+  Multi-Site.
+
+**RPO:** a **frequência do backup** determina o ponto de recuperação alcançável. O backup
+também precisa permitir restaurar ao ponto no tempo em que foi feito.
+⚠️ RTO não é mencionado na aula.
+
+**Mecanismos nativos:** snapshot em EBS, RDS, Aurora, Redshift, Neptune · backup em DynamoDB e
+DocumentDB · EFS via AWS Backup. **O S3 é a exceção: usa Cross-Region Replication (CRR)** —
+cópia **assíncrona e contínua** para a Região de DR.
+
+**AWS Backup** centraliza configuração, agendamento e monitoramento: EBS, EC2, RDS/Aurora,
+DynamoDB, EFS, Storage Gateway, FSx (Windows e Lustre), **com cópia entre Regiões**.
+**Gancho:** "backup centralizado de vários serviços" → AWS Backup, não a soma dos nativos.
+
+**Ambientes híbridos** → **AWS Storage Gateway**.
 
 ---
 
 ## Como isto se conecta ao que já estudei
 
-Primeira aula processada — não há anteriores. Ganchos deixados para as próximas:
-- Os níveis de resiliência (IAM global / VPC regional / subnet zonal) reaparecem em toda
-  questão de alta disponibilidade do **Domínio 2**.
-- **DR e as quatro estratégias** são revisitados a fundo no **Domínio 2**.
-- **S3 Lifecycle vs. Intelligent-Tiering** é decisão de custo — reaparece no **Domínio 4**.
-- **Criptografia e impacto em desempenho** conecta ao **Domínio 3**.
+Primeira aula processada. Ganchos para as próximas:
+- Níveis de resiliência (IAM global / VPC regional / subnet zonal) → toda questão de alta
+  disponibilidade no **D2**.
+- **DR e as 4 estratégias** → aprofundadas no **D2**.
+- **Lifecycle vs. Intelligent-Tiering** → decisão de custo, **D4**.
+- **Criptografia e desempenho** → **D3**.
 
-## Perguntas em aberto
-*O instrutor deixou estas como autoavaliação. Se você não responde de cabeça, é lacuna real.*
+## Lacunas remanescentes
+- ⚠️ **Módulo 5 ("Encerramento") tem transcrição trocada** — texto em inglês sobre processo
+  criativo. Nada extraído.
+- ⚠️ Rastreabilidade cobrada sem nomear CloudTrail, Config, CloudWatch.
+- ⚠️ Organizations vs. Control Tower citados sem diferenciação — estudar separadamente.
+- ⚠️ Impacto quantitativo da criptografia em desempenho: sem valores publicados utilizáveis.
 
-1. Como criar usuários, grupos e roles do IAM — e quais os pontos fortes e limitações de cada?
-2. Que cenários ditam alternar entre permissões baseadas em usuário, grupo ou role?
-3. Como funciona a lógica de decisão do IAM quando há várias políticas anexadas à identidade?
-4. Como projetar e configurar o Active Directory para federar acesso a usuários/roles do IAM?
-5. Quais as diferenças entre ambientes públicos, privados, híbridos e multicloud — e como
-   projetar acesso seguro a cada um?
-6. Como a segurança é configurada inicialmente na VPC padrão vs. personalizada?
-7. Por que escolher KMS em vez de CloudHSM? Como usar os dois juntos?
-8. Que tipos de chave existem, como diferem em capacidade, e com que frequência cada tipo pode
-   ser alternado?
-9. Como gerenciar chaves de criptografia entre Regiões?
-10. Como os certificados são renovados no ACM?
-11. Qual a diferença entre Shield Standard e Shield Advanced?
-12. Capacidade, segurança e resiliência de Site-to-Site VPN vs. Client VPN vs. Direct Connect?
-13. Em quais serviços a criptografia impacta desempenho, e quanto?
+## Fontes das respostas `[doc]`
 
-## Lacunas
-- ⚠️ **Módulo 5 ("Encerramento do domínio 1") tem transcrição trocada** — o texto é sobre
-  processo criativo, em inglês, sem relação com o conteúdo. Nada foi extraído dele.
-- ⚠️ Serviços de rastreabilidade (CloudTrail, Config, CloudWatch) são cobrados conceitualmente
-  mas **não nomeados** na transcrição.
-- ⚠️ Organizations, Control Tower e SCP são citados sem diferenciação.
-- ⚠️ Nenhum número de capacidade, SLA ou limite quantitativo aparece em toda a aula — é uma
-  revisão de escopo, não de detalhe. Os números precisam vir da documentação.
+- [Lógica de avaliação de políticas do IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html) · [SCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+- [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) · [GetSessionToken](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html)
+- [NACL padrão](https://docs.aws.amazon.com/vpc/latest/userguide/default-network-acl.html) · [NACL personalizada](https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html) · [Noções de NACL](https://docs.aws.amazon.com/vpc/latest/userguide/nacl-basics.html)
+- [Recursos do AWS Shield](https://aws.amazon.com/shield/features/) · [FAQ do Shield](https://aws.amazon.com/shield/faqs/) · [Preço do Shield](https://aws.amazon.com/shield/pricing/)
+- [Rotação de chaves do KMS](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html) · [Escolha de serviço de criptografia](https://docs.aws.amazon.com/decision-guides/latest/cryptography-on-aws-how-to-choose/guide.html) · [O que é o CloudHSM](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html) · [KMS e FIPS 140-3 Nível 3](https://aws.amazon.com/blogs/security/aws-kms-now-fips-140-2-level-3-what-does-this-mean-for-you/)
+- [Renovação gerenciada no ACM](https://docs.aws.amazon.com/acm/latest/userguide/managed-renewal.html) · [Renovação com validação por DNS](https://docs.aws.amazon.com/acm/latest/userguide/dns-renewal-validation.html)
+- [Direct Connect](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-direct-connect.html) · [Direct Connect + VPN](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-direct-connect-site-to-site-vpn.html) · [FAQ do AWS VPN](https://aws.amazon.com/vpn/faqs/)

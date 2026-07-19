@@ -90,5 +90,6 @@ mindmap
 - **Módulo 5 do Domain 1 Review ("Encerramento") tem transcrição trocada** — texto em inglês sobre processo criativo. Recuperar no Skill Builder.
 - **Serviços de rastreabilidade não nomeados** na revisão: CloudTrail, AWS Config, CloudWatch. Cobrados conceitualmente, ausentes do texto.
 - **Organizations vs. Control Tower vs. SCP** — citados sem diferenciação.
-- **Nenhum valor quantitativo** em toda a aula (capacidade de Direct Connect vs. VPN, duração de tokens STS, RPO/RTO por estratégia de DR, impacto de criptografia em desempenho). A revisão define escopo, não detalhe — os números virão do Domain 1 Practice e da documentação.
-- **Pendentes de estudo dirigido:** lógica de avaliação de políticas do IAM · simétrica vs. assimétrica · tipos de chave do KMS e frequência de rotação · renovação de certificados no ACM · Shield Standard vs. Advanced · configuração inicial de segurança da VPC padrão vs. personalizada.
+- **A aula não traz nenhum valor quantitativo** — define escopo, não detalhe. Os números foram levantados na documentação e incorporados a `d1-review/02-conteudo.md`: durações do STS (12 h / 36 h), banda de VPN (1,25 Gbps por túnel) e Direct Connect (1/10/100 Gbps), preço do Shield Advanced (US$ 3.000/mês), rotação do KMS (365 dias, faixa 90–2560), renovação do ACM (60 dias antes).
+- **Resolvidos pela documentação:** lógica de avaliação de políticas do IAM · simétrica vs. assimétrica · rotação por tipo de chave · renovação no ACM · Shield Standard vs. Advanced · NACL da VPC padrão vs. personalizada · KMS vs. CloudHSM.
+- **Ainda em aberto:** RTO por estratégia de DR · impacto quantitativo da criptografia em desempenho.

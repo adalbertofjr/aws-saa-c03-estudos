@@ -5,7 +5,7 @@ atualizados. `Serviços novos` = quantos entraram em `estudo/_indice-servicos.md
 
 | Data | Domínio | Aula | Cards | Serviços novos | Importado | Lacunas |
 |---|---|---|---|---|---|---|
-| 2026-07-19 | d1 | [Domain 1 Review](../estudo/d1/d1-review/01-resumo.md) | 46 | 42 | ☐ | Módulo 5 com transcrição trocada; sem valores quantitativos |
+| 2026-07-19 | d1 | [Domain 1 Review](../estudo/d1/d1-review/01-resumo.md) | 63 | 42 | ☐ | Módulo 5 com transcrição trocada; RTO e impacto de cripto em desempenho |
 
 ## Trilha planejada (18 treinamentos)
 

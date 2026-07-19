@@ -18,7 +18,9 @@ relative_links:
 collections:
   estudo:
     output: true
-    permalink: /:path/
+    # /:path/ sozinho publicaria os documentos na raiz (/d1/...), sem
+    # namespace e sujeito a colidir com páginas futuras.
+    permalink: /estudo/:path/
 
 defaults:
   - scope: { path: "", type: estudo }

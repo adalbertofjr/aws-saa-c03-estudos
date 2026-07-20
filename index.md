@@ -55,4 +55,4 @@ _Nenhuma aula processada ainda._
 ## Referência
 
 - [Índice acumulado de serviços AWS]({{ '/estudo/00-indice-servicos/' | relative_url }}) — todos os serviços vistos, com o discriminador de cada um e o mapa de decisão rápida. É a folha de consulta da semana do exame.
-- [Flashcards]({{ '/flashcards/' | relative_url }}) — filtre por `disc` para treinar só discriminação entre serviços, que é o que o exame mais cobra.
+- [Flashcards]({{ '/flashcards/' | relative_url }}) — filtre por `disc` para treinar só discriminação entre serviços, que é o que o exame mais cobra. 

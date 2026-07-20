@@ -40,7 +40,7 @@ Para `transcricoes/<dominio>/<slug>.md`, gerar em `_estudo/<dominio>/<slug>/`:
 | 1 | `01-resumo.md` | 1 página orientada a decisão. Primeira leitura e revisão de véspera. |
 | 2 | `02-conteudo.md` | Material didático: a aula reescrita como texto de estudo. Extensão conforme a fonte — ver abaixo. |
 | 3 | `03-servicos.md` | Tabela de referência dos serviços AWS da aula + pares confundíveis. |
-| 4 | `04-mapa-mental.md` | Mermaid `mindmap` da aula. |
+| 4 | `04-mapa-mental.md` | Markmap (outline Markdown) da aula. |
 | 5 | `05-flashcards.csv` | Anki, 15–30 cards. |
 
 `<dominio>` ∈ `d1` (seguras), `d2` (resilientes), `d3` (alto desempenho),
@@ -199,16 +199,32 @@ Cobertura alvo: 15–30 cards por aula de 45min. Menos indica extração rasa; m
 indica que fatos não-testáveis viraram card. Rodar `00-processo/validar-cards.sh` no CSV
 antes de considerar a aula fechada.
 
-## Sintaxe Mermaid (mapas mentais)
+## Sintaxe Markmap (mapas mentais)
+
+Mapas mentais usam [Markmap](https://markmap.js.org), não Mermaid — trocado porque o
+Markmap entrega pan/zoom e expandir/colapsar ramos, útil para revisar no celular. O bloco
+fica num fence ```` ```markmap ````, e a árvore é um outline Markdown comum: `#`/`##`/`###`
+para os três primeiros níveis, listas com `-` (aninhadas por indentação de 2 espaços) para
+o que for mais fundo que isso.
 
 ```
-mindmap
-  root((Título<br>em duas linhas))
-    Ramo
-      Folha
+# Domínio X — Nome (peso%)
+## 1.1 Declaração de tarefa
+### Tópico
+- Fato — o discriminador, não a definição
+- Fato mais fundo
+  - Sub-fato aninhado
 ```
-Evitar `(`, `)` e `:` dentro do texto dos nós — quebram o parser. Quebra de linha: `<br>`.
-Validar em mermaid.live ou no preview do VS Code antes de considerar pronto.
+
+Regras:
+- **`#` só uma vez**, na raiz. Duplicar produz duas árvores.
+- Sem `(`, `)` nem `:` dentro do texto — ainda quebram o parser de outline, mesmo não
+  sendo mais o Mermaid.
+- Sem quebra de linha forçada dentro do item (nada de `<br>`) — o Markmap encaixa o texto
+  na caixa sozinho; usar travessão (`—`) para separar cláusulas na mesma linha, como no
+  resto do dossiê.
+- Validar em <https://markmap.js.org/repl> antes de considerar pronto, ou olhar a página
+  publicada — não há preview no VS Code para este formato como havia com o Mermaid.
 
 ## Fluxo de trabalho
 

@@ -13,7 +13,7 @@ site para estudar de qualquer lugar.
 | 1 | `01-resumo.md` | Uma página orientada a decisão — leitura de véspera |
 | 2 | `02-conteudo.md` | A aula reescrita como material de leitura |
 | 3 | `03-servicos.md` | Tabela de serviços com o discriminador de cada um |
-| 4 | `04-mapa-mental.md` | Mapa mental em Mermaid |
+| 4 | `04-mapa-mental.md` | Mapa mental interativo (Markmap) |
 | 5 | `05-flashcards.csv` | Flashcards — importáveis no Anki e lidos pelo site |
 
 Mais dois acumuladores que crescem a cada aula: o [índice de

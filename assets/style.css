@@ -77,6 +77,26 @@ th, td { padding: .5rem .7rem; text-align: left; border-bottom: 1px solid var(--
 th { background: var(--acento-fraco); font-weight: 600; white-space: nowrap; }
 tbody tr:last-child td { border-bottom: 0; }
 
+/* ---------- mapa mental (Markmap) ----------
+   Fundo claro FIXO, independente do tema da página: o texto e as ligações que o
+   Markmap desenha usam cor escura por padrão, e sincronizar isso com o dark mode
+   do site exigiria depender de hooks internos não documentados da biblioteca.
+   Um "canvas" claro sempre legível é mais simples e mais confiável. */
+.markmap-mapa {
+  position: relative;
+  height: 70vh;
+  min-height: 22rem;
+  margin: 1rem 0;
+  background: #fdfdfb;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+.markmap-mapa svg { width: 100%; height: 100%; }
+/* .mm-toolbar já vem estilizado (fundo branco, borda) pelo CSS do próprio pacote —
+   um override aqui usando var(--superficie) ficaria escuro no tema escuro, sobre o
+   canvas que é deliberadamente sempre claro. Nada a fazer. */
+
 /* ---------- metadados ---------- */
 .meta { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0 0 1.2rem; }
 .tag {

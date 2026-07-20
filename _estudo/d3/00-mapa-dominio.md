@@ -16,6 +16,7 @@ mindmap
 ```
 
 ## Aulas incorporadas
+
 | Aula | Data | Ramos que acrescentou |
 |---|---|---|
 

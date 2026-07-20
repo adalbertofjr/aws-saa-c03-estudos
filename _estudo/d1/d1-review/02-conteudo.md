@@ -37,6 +37,7 @@ seguras · **1.3** controles de segurança de dados.
   raiz está errada por definição.
 
 ### Níveis de resiliência (armadilha recorrente)
+
 | IAM | VPC | Subnet |
 |---|---|---|
 | **Global** | **Regional** | **Zonal (AZ)** |
@@ -47,6 +48,7 @@ seguras · **1.3** controles de segurança de dados.
   incidente. Credencial vazada com escopo estreito compromete pouco.
 
 ### Políticas
+
 | | **Identidade** | **Recurso** |
 |---|---|---|
 | Anexada a | usuário, grupo, role | bucket S3, fila SQS, endpoint VPC, chave KMS |
@@ -171,6 +173,7 @@ esteve público em algum momento?" → Config.
 A regra `*` DENY existe em ambas e **não pode ser removida**.
 
 ### Filtros de rede
+
 | | **Security Group** | **Network ACL** |
 |---|---|---|
 | Nível | instância / ENI | subnet |
@@ -188,6 +191,7 @@ efêmeras** — 1024-65535 cobre os casos comuns.
 - Componentes a dominar **em conjunto**: security groups, NACLs, tabelas de rota, NAT gateways.
 
 ### Conectividade privada
+
 | Opção | Uso | Armadilha |
 |---|---|---|
 | **VPC Endpoint** | alcançar serviço AWS **sem IGW nem NAT** | tráfego não sai para a internet |
@@ -215,6 +219,7 @@ conectividade e de isolamento chegam sempre juntos.
 Padrão recomendado: **Direct Connect + VPN como backup** — dedicado com fallback criptografado.
 
 ### Proteção de aplicação
+
 | Serviço | Trata | Escopo |
 |---|---|---|
 | **WAF** | camada 7 — **injeção SQL**, XSS | **só ALB, API Gateway e CloudFront** |
@@ -248,6 +253,7 @@ Sem rotação e com pressão de custo → Parameter Store.
 ## 1.3 — Controles de segurança de dados
 
 ### Criptografia — os dois tipos
+
 | | **Em repouso** | **Em trânsito** |
 |---|---|---|
 | Protege contra | acesso não autorizado e **roubo** | interceptação na transferência |

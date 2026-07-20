@@ -107,6 +107,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 ## Pares confundíveis
 
 ### AWS Secrets Manager vs. SSM Parameter Store
+
 | | Secrets Manager | Parameter Store |
 |---|---|---|
 | Rotação automática | **Sim**, forçada em intervalo de dias | Não nativa † |
@@ -118,6 +119,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 **Diferenciador:** a palavra **rotação** decide a questão.
 
 ### AWS PrivateLink vs. VPC Peering
+
 | | PrivateLink | VPC Peering |
 |---|---|---|
 | Unidade exposta | **um serviço** | **a VPC inteira** |
@@ -129,6 +131,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 **Diferenciador:** exposição *de um serviço* vs. *da VPC inteira*.
 
 ### AWS WAF vs. AWS Shield
+
 | | WAF | Shield |
 |---|---|---|
 | Camada | aplicação (7) | rede/transporte † |
@@ -138,6 +141,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 **Diferenciador:** "injeção SQL" → WAF; "DDoS" → Shield.
 
 ### Amazon Macie vs. Amazon GuardDuty
+
 | | Macie | GuardDuty |
 |---|---|---|
 | Objeto de análise | **dados** (conteúdo no S3) | **atividade** (comportamento na conta) † |
@@ -146,6 +150,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 **Diferenciador:** "identificar PII no S3" → Macie.
 
 ### Política de identidade vs. política de recurso
+
 | | Identidade | Recurso |
 |---|---|---|
 | Anexada a | usuário, grupo, role | bucket S3, fila SQS, endpoint VPC, chave KMS |
@@ -155,6 +160,7 @@ Marcações: sem rótulo = veio da transcrição · `†` = [fora da transcriç�
 **Diferenciador:** presença do elemento **`Principal`**.
 
 ### AWS KMS vs. AWS CloudHSM
+
 | | KMS | CloudHSM |
 |---|---|---|
 | Modelo | gerenciado, multi-tenant † | HSM **dedicado**, tenant único † |
@@ -167,6 +173,7 @@ do cliente** e as interfaces **PKCS#11/JCE**. O SAA-C03 pode ainda testar o enqu
 Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
 
 ### AWS CloudTrail vs. AWS Config
+
 | | CloudTrail | Config |
 |---|---|---|
 | Registra | a **chamada de API** | o **estado** do recurso e como mudou |
@@ -175,6 +182,7 @@ Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
 **Diferenciador:** autoria da ação → CloudTrail. Histórico de configuração → Config.
 
 ### Organizations/SCP vs. Service Catalog
+
 | | SCP | Service Catalog |
 |---|---|---|
 | Mecanismo | **teto** de permissões da conta | **produtos aprovados** + launch role |
@@ -184,12 +192,14 @@ Os dois podem operar juntos: o CloudHSM como **custom key store** do KMS.
 amplo" → Service Catalog.
 
 ### AD Connector vs. Managed Microsoft AD
+
 | | AD Connector | Managed Microsoft AD |
 |---|---|---|
 | Onde ficam os dados | **só on-premises** — é proxy, não guarda nada na nuvem | AD real na AWS |
 | Escolha quando | manter a administração no AD existente | trust com on-premises, +5.000 usuários, cargas Windows |
 
 ### Níveis de resiliência (armadilha clássica)
+
 | Recurso | Nível |
 |---|---|
 | **IAM** | **Global** |

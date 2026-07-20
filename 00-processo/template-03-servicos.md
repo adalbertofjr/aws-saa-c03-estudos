@@ -25,6 +25,7 @@ ordem: 3
 ## Pares confundíveis
 
 ### <Serviço X> vs. <Serviço Y>
+
 | | <X> | <Y> |
 |---|---|---|
 | Modelo | | |

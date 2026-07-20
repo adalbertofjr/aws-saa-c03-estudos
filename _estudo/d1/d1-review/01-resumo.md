@@ -17,6 +17,7 @@ Segurança não é um tópico do exame — é um critério de desempate em **tod
 quando duas respostas resolvem o requisito, a mais segura é a correta.
 
 ## As três declarações de tarefa
+
 | # | Tarefa | Núcleo |
 |---|---|---|
 | 1.1 | Projetar acesso seguro aos recursos da AWS | Contas, IAM, políticas, STS, federação, Organizations/SCP, rastreabilidade |

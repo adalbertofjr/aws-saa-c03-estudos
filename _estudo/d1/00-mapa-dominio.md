@@ -99,6 +99,7 @@ mindmap
 ```
 
 ## Aulas incorporadas
+
 | Aula | Data | Ramos que acrescentou |
 |---|---|---|
 | [Domain 1 Review](d1-review/01-resumo.md) | 2026-07-19 | Estrutura completa das três declarações de tarefa — todos os ramos acima |
